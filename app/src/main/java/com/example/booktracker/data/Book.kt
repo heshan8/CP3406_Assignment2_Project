@@ -20,3 +20,8 @@ enum class BookStatus(val displayName: String) {
     READING("Reading"),
     FINISHED("Finished")
 }
+
+// Extension functions for better usability
+fun Book.isFinished() = status == BookStatus.FINISHED
+fun Book.isReading() = status == BookStatus.READING
+fun Book.progressPercentage() = "$progress%"
