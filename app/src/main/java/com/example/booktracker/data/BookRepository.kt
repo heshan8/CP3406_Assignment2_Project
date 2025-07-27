@@ -60,4 +60,20 @@ class BookRepository {
             genre = "Fiction",
             dateFinished = System.currentTimeMillis() - 172800000
         )
-    )}
+    )
+    fun addBook(book: Book) {
+        books.add(book)
+    }
+    fun updateBook(updatedBook: Book) {
+        val index = books.indexOfFirst { it.id == updatedBook.id }
+        if (index != -1) {
+            books[index] = updatedBook
+        }
+    }
+    fun deleteBook(bookId: String) {
+        books.removeIf { it.id == bookId }
+    }
+    fun getBookById(id: String): Book? {
+        return books.find { it.id == id }
+    }
+}
