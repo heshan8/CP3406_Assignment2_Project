@@ -113,9 +113,20 @@ fun AddBookScreen(
                 modifier = Modifier.padding(vertical = 8.dp)
             )
         }
+        // Buttons
+        Row(modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            OutlinedButton(
+                onClick = onCancel,
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("Cancel")
+            }
 
-        Row(modifier = Modifier.padding(top = 16.dp)) {
-            Button(onClick = {
+            
                 if (title.isNotBlank()) {
                     onSave(Book(title, status, rating, notes))
                 }
