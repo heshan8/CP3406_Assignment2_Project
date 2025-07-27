@@ -70,4 +70,7 @@ class BookRepository {
             books[index] = updatedBook
         }
     }
+    fun deleteBook(bookId: String) {
+        books.removeIf { it.id == bookId }
+    }
     }
