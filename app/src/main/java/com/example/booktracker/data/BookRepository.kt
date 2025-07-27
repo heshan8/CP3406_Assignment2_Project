@@ -73,4 +73,7 @@ class BookRepository {
     fun deleteBook(bookId: String) {
         books.removeIf { it.id == bookId }
     }
+    fun getBookById(id: String): Book? {
+        return books.find { it.id == id }
     }
+}
