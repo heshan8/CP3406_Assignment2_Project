@@ -5,7 +5,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.booktracker.Book
+import com.example.booktracker.data.Book
+import com.example.booktracker.data.BookStatus
+
 
 @Composable
 fun AddBookScreen(
