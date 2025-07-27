@@ -60,4 +60,9 @@ class BookRepository {
             genre = "Fiction",
             dateFinished = System.currentTimeMillis() - 172800000
         )
-    )}
+    )
+    fun addBook(book: Book) {
+        books.add(book)
+    }
+    
+    }
