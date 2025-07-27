@@ -25,14 +25,24 @@ fun AddBookScreen(
     val isFormValid = title.isNotBlank() && author.isNotBlank()
 
     Column(
-        modifier = Modifier.padding(WindowInsets.safeDrawing.asPaddingValues()).padding(16.dp)    ) {
-        Text("Add a New Book", style = MaterialTheme.typography.headlineSmall)
-
+        modifier = Modifier
+            .padding(WindowInsets.safeDrawing.asPaddingValues())
+            .padding(16.dp)
+    ) {
+        Text(
+            text = "Add a New Book",
+            style = MaterialTheme.typography.headlineSmall,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+        
         OutlinedTextField(
             value = title,
             onValueChange = { title = it },
-            label = { Text("Title") },
-            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+            label = { Text("Title*") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            isError = title.isBlank()
         )
 
         OutlinedTextField(
