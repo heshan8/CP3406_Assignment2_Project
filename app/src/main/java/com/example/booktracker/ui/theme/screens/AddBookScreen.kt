@@ -79,6 +79,21 @@ fun AddBookScreen(
             onSelected = { status = it },
             modifier = Modifier.padding(vertical = 8.dp)
 
+        // Rating section for finished books
+        if (status == BookStatus.FINISHED) {
+            Text(
+                text = "Rating",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+
+            RatingBar(
+                rating = rating,
+                onRatingChange = { rating = it },
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+        }
+
         Row(modifier = Modifier.padding(top = 16.dp)) {
             Button(onClick = {
                 if (title.isNotBlank()) {
