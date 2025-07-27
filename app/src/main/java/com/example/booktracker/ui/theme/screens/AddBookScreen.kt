@@ -94,6 +94,22 @@ fun AddBookScreen(
             )
         }
 
+        // Progress Section for currently reading books
+        if (status == BookStatus.READING)
+            Text(
+                text = "Progress: $progress%",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+
+            Slider(
+                value = progress.toFloat(),
+                onValueChange = { progress = it.toInt() },
+                valueRange = 0f..100f,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+        }
+
         Row(modifier = Modifier.padding(top = 16.dp)) {
             Button(onClick = {
                 if (title.isNotBlank()) {
