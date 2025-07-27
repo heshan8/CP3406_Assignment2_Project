@@ -34,7 +34,7 @@ fun AddBookScreen(
             style = MaterialTheme.typography.headlineSmall,
             modifier = Modifier.padding(bottom = 16.dp)
         )
-        
+        // Title
         OutlinedTextField(
             value = title,
             onValueChange = { title = it },
@@ -43,6 +43,27 @@ fun AddBookScreen(
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
             isError = title.isBlank()
+        )
+
+        // Author
+        OutlinedTextField(
+            value = author,
+            onValueChange = { author = it },
+            label = { Text("Author*") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+            isError = author.isBlank()
+        )
+
+        // Genre
+        OutlinedTextField(
+            value = genre,
+            onValueChange = { genre = it },
+            label = { Text("Genre") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp)
         )
 
         OutlinedTextField(
