@@ -70,7 +70,11 @@ fun AddBookScreen(
             value = notes,
             onValueChange = { notes = it },
             label = { Text("Notes") },
-            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            minLines = 3,
+            maxLines = 5
         )
 
         // Status
