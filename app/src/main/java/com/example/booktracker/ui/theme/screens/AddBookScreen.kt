@@ -73,7 +73,11 @@ fun AddBookScreen(
             modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
         )
 
-        DropdownMenuBox(selected = status, onSelected = { status = it })
+        // Status
+        StatusDropdown(
+            selected = status,
+            onSelected = { status = it },
+            modifier = Modifier.padding(vertical = 8.dp)
 
         Row(modifier = Modifier.padding(top = 16.dp)) {
             Button(onClick = {
