@@ -64,5 +64,10 @@ class BookRepository {
     fun addBook(book: Book) {
         books.add(book)
     }
-    
+    fun updateBook(updatedBook: Book) {
+        val index = books.indexOfFirst { it.id == updatedBook.id }
+        if (index != -1) {
+            books[index] = updatedBook
+        }
+    }
     }
