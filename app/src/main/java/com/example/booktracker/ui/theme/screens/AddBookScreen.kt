@@ -21,6 +21,8 @@ fun AddBookScreen(
     val rating by remember { mutableIntStateOf(0) }
     var notes by remember { mutableStateOf("") }
     var progress by remember { mutableIntStateOf(0) }
+    
+    val isFormValid = title.isNotBlank() && author.isNotBlank()
 
     Column(
         modifier = Modifier.padding(WindowInsets.safeDrawing.asPaddingValues()).padding(16.dp)    ) {
