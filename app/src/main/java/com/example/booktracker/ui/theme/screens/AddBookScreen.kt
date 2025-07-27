@@ -13,9 +13,12 @@ fun AddBookScreen(
     onCancel: () -> Unit
 ) {
     var title by remember { mutableStateOf("") }
+    var author by remember { mutableStateOf("") }
+    var genre by remember { mutableStateOf("") }
     var status by remember { mutableStateOf("To Read") }
     val rating by remember { mutableIntStateOf(0) }
     var notes by remember { mutableStateOf("") }
+    var progress by remember { mutableIntStateOf(0) }
 
     Column(
         modifier = Modifier.padding(WindowInsets.safeDrawing.asPaddingValues()).padding(16.dp)    ) {
