@@ -141,7 +141,9 @@ fun AddBookScreen(
                                 author = author,
                                 genre = genre,
                                 status = status,
-                                notes = notes
+                                notes = notes,
+                                rating = if (status == BookStatus.FINISHED) rating else 0,
+                                // rating is only kept if the book is marked FINISHED, otherwise it's 0.
 
 
                             )
