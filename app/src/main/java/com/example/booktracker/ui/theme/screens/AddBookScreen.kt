@@ -150,8 +150,21 @@ fun AddBookScreen(
 
                             )
                         )
-                }
-            )
+                    }
+                },
+                enabled = isFormValid,
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("Save")
+            }
+        }
+    }
+
+
+
+
+
+
 
                 if (title.isNotBlank()) {
                     onSave(Book(title, status, rating, notes))
@@ -164,10 +177,7 @@ fun AddBookScreen(
 
             OutlinedButton(onClick = onCancel) {
                 Text("Cancel")
-            }
-        }
-    }
-}
+
 
 @Composable
 fun DropdownMenuBox(selected: String, onSelected: (String) -> Unit) {
