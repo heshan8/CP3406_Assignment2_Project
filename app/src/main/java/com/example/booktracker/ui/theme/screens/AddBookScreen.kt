@@ -165,3 +165,26 @@ fun DropdownMenuBox(selected: String, onSelected: (String) -> Unit) {
         }
     }
 }
+
+// TODO: Implement StatusDropdown composable for selecting BookStatus
+@Composable
+fun StatusDropdown(
+    selected: BookStatus,
+    onSelected: (BookStatus) -> Unit,
+    modifier: Modifier = Modifier
+) {
+// Placeholder for dropdown UI
+// Use DropdownMenu with options from BookStatus.values()
+}
+
+// TODO: Implement RatingBar composable for selecting star rating
+@Composable
+fun RatingBar(
+    rating: Int,
+    onRatingChange: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    maxRating: Int = 5
+) {
+    // Placeholder for a simple star-based rating bar
+    // Loop through 1..maxRating and show stars as Text or Icons
+}
