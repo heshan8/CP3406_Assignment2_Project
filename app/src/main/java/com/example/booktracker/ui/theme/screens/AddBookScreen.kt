@@ -126,7 +126,17 @@ fun AddBookScreen(
                 Text("Cancel")
             }
 
-            
+            Button(
+                onClick = {
+                    if (isFormValid) {
+                        val finalProgress = when (status) {
+                            BookStatus.FINISHED -> 100
+                            BookStatus.READING -> progress
+                            BookStatus.TO_READ -> 0
+                        }
+                }
+            )
+
                 if (title.isNotBlank()) {
                     onSave(Book(title, status, rating, notes))
                 }
