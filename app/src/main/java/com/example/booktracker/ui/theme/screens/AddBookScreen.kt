@@ -146,8 +146,7 @@ fun AddBookScreen(
                                 // rating is only kept if the book is marked FINISHED, otherwise it's 0.
                                 progress = finalProgress,
                                 dateFinished = if (status == BookStatus.FINISHED) System.currentTimeMillis() else null
-
-
+                                // Set book finish time to current time only if the book in finished otherwise its null
                             )
                         )
                     }
@@ -159,25 +158,6 @@ fun AddBookScreen(
             }
         }
     }
-
-
-
-
-
-
-
-                if (title.isNotBlank()) {
-                    onSave(Book(title, status, rating, notes))
-                }
-            }) {
-                Text("Save")
-            }
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            OutlinedButton(onClick = onCancel) {
-                Text("Cancel")
-
 
 @Composable
 fun DropdownMenuBox(selected: String, onSelected: (String) -> Unit) {
