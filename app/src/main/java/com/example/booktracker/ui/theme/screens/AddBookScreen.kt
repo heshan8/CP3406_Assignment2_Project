@@ -134,6 +134,18 @@ fun AddBookScreen(
                             BookStatus.READING -> progress
                             BookStatus.TO_READ -> 0
                         }
+
+                        onSave(
+                            Book(
+                                title = title,
+                                author = author,
+                                genre = genre,
+                                status = status,
+                                notes = notes
+
+
+                            )
+                        )
                 }
             )
 
