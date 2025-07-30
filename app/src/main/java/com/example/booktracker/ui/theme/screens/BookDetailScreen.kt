@@ -108,9 +108,18 @@ fun BookDetailScreen(
             maxLines = 8
         )
 
+        // Save Buttons
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            OutlinedButton(
+                onClick = onCancel,
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("Cancel")
+            }
 
-
-        Row {
             Button(onClick = {
                 onSave(book.copy(notes = notes, progress = progress))
             }) {
@@ -119,8 +128,7 @@ fun BookDetailScreen(
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            OutlinedButton(onClick = onCancel) {
-                Text("Cancel")
+
             }
         }
     }
