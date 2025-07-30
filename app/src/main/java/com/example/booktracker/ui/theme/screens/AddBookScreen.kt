@@ -231,8 +231,8 @@ fun RatingBar(
                val icon = if (i <= rating) "★" else "☆"
                Text(
                    text = icon,
-                   Style = MaterialTheme.typography.headlineSmall,
-                   colour = if (i <= rating) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
+                   style = MaterialTheme.typography.headlineSmall,
+                   color = if (i <= rating) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
                )
            }
        }
