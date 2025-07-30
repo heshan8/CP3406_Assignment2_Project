@@ -16,6 +16,8 @@ fun BookDetailScreen(
 ) {
     var notes by remember { mutableStateOf(book.notes) }
     var progress by remember { mutableStateOf(book.progress) }
+    var status by remember { mutableStateOf(book.status) }
+    var rating by remember { mutableStateOf(book.rating) }
 
     Column(modifier = Modifier
         .padding(WindowInsets.safeDrawing.asPaddingValues())
