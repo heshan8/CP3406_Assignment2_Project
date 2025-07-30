@@ -190,6 +190,15 @@ fun StatusDropdown(
 ) {
     val options = BookStatus.values()
     var expanded by remember { mutableStateOf(false) }
+
+    Box(modifier = modifier) {
+        OutlinedButton(
+            onClick = {expanded = true},
+            modifier = modifier.fillMaxWidth()
+        ) {
+            Text(selected.displayName)
+        }
+    }
 // Placeholder for dropdown UI
 // Use DropdownMenu with options from BookStatus.values()
 }
