@@ -18,7 +18,7 @@ fun AddBookScreen(
     var author by remember { mutableStateOf("") }
     var genre by remember { mutableStateOf("") }
     var status by remember { mutableStateOf(BookStatus.TO_READ) }
-    val rating by remember { mutableIntStateOf(0) }
+    var rating by remember { mutableIntStateOf(0) }
     var notes by remember { mutableStateOf("") }
     var progress by remember { mutableIntStateOf(0) }
 
