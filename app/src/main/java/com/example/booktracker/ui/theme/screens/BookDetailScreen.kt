@@ -73,6 +73,24 @@ fun BookDetailScreen(
                 modifier = Modifier.padding(bottom = 16.dp)
             )
         }
+        // Progress Section for currently reading books
+        if (status == BookStatus.READING) {
+            Text(
+                text = "Progress: $progress%",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            Slider(
+                value = progress.toFloat(),
+                onValueChange = { progress = it.toInt() },
+                valueRange = 0f..100f,
+                modifier = Modifier.padding(bottom = 16.dp)
+
+            )
+        }
+
+        Spacer(Modifier.height(24.dp))
 
         Spacer(Modifier.height(16.dp))
 
@@ -83,17 +101,7 @@ fun BookDetailScreen(
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(Modifier.height(16.dp))
 
-        Text("Progress: $progress%", style = MaterialTheme.typography.bodyMedium)
-
-        Slider(
-            value = progress.toFloat(),
-            onValueChange = { progress = it.toInt() },
-            valueRange = 0f..100f
-        )
-
-        Spacer(Modifier.height(24.dp))
 
         Row {
             Button(onClick = {
