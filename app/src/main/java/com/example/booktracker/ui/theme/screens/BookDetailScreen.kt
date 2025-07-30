@@ -120,7 +120,16 @@ fun BookDetailScreen(
                 Text("Cancel")
             }
 
-            Button(onClick = {
+            Button(
+                onClick = {
+                    val finalProgress = when (status) {
+                        BookStatus.FINISHED -> 100
+                        BookStatus.READING -> progress
+                        BookStatus.TO_READ -> 0
+                    }
+
+
+
                 onSave(book.copy(notes = notes, progress = progress))
             }) {
                 Text("Save")
