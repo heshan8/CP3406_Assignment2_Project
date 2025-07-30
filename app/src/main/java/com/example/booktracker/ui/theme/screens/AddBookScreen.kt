@@ -216,7 +216,6 @@ fun StatusDropdown(
     }
 }
 
-// TODO: Implement RatingBar composable for selecting star rating
 @Composable
 fun RatingBar(
     rating: Int,
@@ -224,6 +223,18 @@ fun RatingBar(
     modifier: Modifier = Modifier,
     maxRating: Int = 5
 ) {
-    // Placeholder for a simple star-based rating bar
-    // Loop through 1..maxRating and show stars as Text or Icons
+    Row(modifier = modifier) {
+       for (i in 1..maxRating) {
+           IconButton(
+               onClick = { onRatingChange(i) }
+           ) {
+               val icon = if (i <= rating) "★" else "☆"
+               Text(
+                   text = icon,
+                   Style = MaterialTheme.typography.headlineSmall,
+                   colour = if (i <= rating) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
+               )
+           }
+       }
+    }
 }
