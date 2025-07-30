@@ -182,13 +182,14 @@ fun DropdownMenuBox(selected: String, onSelected: (String) -> Unit) {
     }
 }
 
-// TODO: Implement StatusDropdown composable for selecting BookStatus
 @Composable
 fun StatusDropdown(
     selected: BookStatus,
     onSelected: (BookStatus) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val options = BookStatus.values()
+    var expanded by remember { mutableStateOf(false) }
 // Placeholder for dropdown UI
 // Use DropdownMenu with options from BookStatus.values()
 }
