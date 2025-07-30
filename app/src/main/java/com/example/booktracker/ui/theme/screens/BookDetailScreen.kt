@@ -47,7 +47,7 @@ fun BookDetailScreen(
             )
         }
 
-        // Dropdown
+        // Book Satus Dropdown
         Text(
             text = "Status",
             style = MaterialTheme.typography.bodyMedium,
@@ -59,8 +59,20 @@ fun BookDetailScreen(
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        
-        Text("Rating: ${book.rating}★", style = MaterialTheme.typography.bodySmall)
+        // Rating section for finished books
+        if (status == BookStatus.FINISHED) {
+            Text(
+                text = "Rating",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            RatingBar(
+                rating = rating,
+                onRatingChange = { rating = it},
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+        }
 
         Spacer(Modifier.height(16.dp))
 
