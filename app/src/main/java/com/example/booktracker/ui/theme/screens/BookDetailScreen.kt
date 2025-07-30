@@ -47,7 +47,19 @@ fun BookDetailScreen(
             )
         }
 
-        Text("Status: ${book.status}", style = MaterialTheme.typography.bodyMedium)
+        // Dropdown
+        Text(
+            text = "Status",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        StatusDropdown(
+            selected = status,
+            onSelected = { status = it },
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        
         Text("Rating: ${book.rating}★", style = MaterialTheme.typography.bodySmall)
 
         Spacer(Modifier.height(16.dp))
