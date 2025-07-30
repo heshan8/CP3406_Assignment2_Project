@@ -82,6 +82,7 @@ fun AddBookScreen(
             selected = status,
             onSelected = { status = it },
             modifier = Modifier.padding(vertical = 8.dp)
+        )
 
         // Rating section for finished books
         if (status == BookStatus.FINISHED) {
