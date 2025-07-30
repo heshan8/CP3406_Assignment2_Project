@@ -19,11 +19,34 @@ fun BookDetailScreen(
     var status by remember { mutableStateOf(book.status) }
     var rating by remember { mutableStateOf(book.rating) }
 
-    Column(modifier = Modifier
-        .padding(WindowInsets.safeDrawing.asPaddingValues())
-        .padding(16.dp)) {
+    Column(
+        modifier = Modifier
+            .padding(WindowInsets.safeDrawing.asPaddingValues())
+            .padding(16.dp)
+    ) {
 
-        Text(book.title, style = MaterialTheme.typography.headlineSmall)
+        Text(
+            text = book.title,
+            style = MaterialTheme.typography.headlineSmall,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        Text(
+            text = "by ${book.author}",
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
+
+        if ( book.genre.isNotEmpty()) {
+            Text(
+                text = "Genre: ${book.genre}",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+        }
+
         Text("Status: ${book.status}", style = MaterialTheme.typography.bodyMedium)
         Text("Rating: ${book.rating}★", style = MaterialTheme.typography.bodySmall)
 
