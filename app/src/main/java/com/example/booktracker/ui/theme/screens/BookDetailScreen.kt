@@ -90,15 +90,22 @@ fun BookDetailScreen(
             )
         }
 
-        Spacer(Modifier.height(24.dp))
-
-        Spacer(Modifier.height(16.dp))
+        // Notes Field
+        Text(
+            text = "notes",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
 
         OutlinedTextField(
             value = notes,
             onValueChange = { notes = it },
-            label = { Text("Notes") },
-            modifier = Modifier.fillMaxWidth()
+            label = { Text("Your thoughts...") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 24.dp),
+            minLines = 4,
+            maxLines = 8
         )
 
 
