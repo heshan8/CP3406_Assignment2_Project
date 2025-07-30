@@ -15,6 +15,7 @@ data class Book(
     val dateFinished: Long? = null,
     val coverUrl: String? = null
 )
+// Using enum to show book status - easier to manage and avoids typos.
 enum class BookStatus(val displayName: String) {
     TO_READ("To Read"),
     READING("Reading"),
