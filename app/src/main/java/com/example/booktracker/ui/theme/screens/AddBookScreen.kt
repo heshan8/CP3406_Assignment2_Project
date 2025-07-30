@@ -198,9 +198,22 @@ fun StatusDropdown(
         ) {
             Text(selected.displayName)
         }
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false}
+        ) {
+            options.forEach { option ->
+                DropdownMenuItem(
+                    text = { Text(option.displayName) },
+                    onClick = {
+                        onSelected(option)
+                        expanded = false
+                    }
+                )
+            }
+        }
     }
-// Placeholder for dropdown UI
-// Use DropdownMenu with options from BookStatus.values()
 }
 
 // TODO: Implement RatingBar composable for selecting star rating
