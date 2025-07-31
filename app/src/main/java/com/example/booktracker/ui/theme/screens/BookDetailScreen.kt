@@ -137,7 +137,7 @@ fun BookDetailScreen(
 
                         onSave(
                             book.copy(
-                                notes = notes,
+                                notes = notes.trim(),
                                 progress = finalProgress,
                                 status = status,
                                 rating = if (status == BookStatus.FINISHED) rating else 0,
