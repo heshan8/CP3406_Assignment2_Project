@@ -93,9 +93,9 @@ fun BookTrackerApp() {
                     repository.books
                 } else {
                     repository.books.filter { book ->
-                        book.title.contains(searchQuery, ignoreCase = true) ||
-                                book.author.contains(searchQuery, ignoreCase = true) ||
-                                book.genre.contains(searchQuery, ignoreCase = true)
+                        book.title.contains(searchQuery.trim(), ignoreCase = true) ||
+                        book.author.contains(searchQuery.trim(), ignoreCase = true) ||
+                        book.genre.contains(searchQuery.trim(), ignoreCase = true)
                     }
                 }
 
