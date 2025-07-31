@@ -19,6 +19,7 @@ fun BookDetailScreen(
     var progress by remember { mutableStateOf(book.progress) }
     var status by remember { mutableStateOf(book.status) }
     var rating by remember { mutableStateOf(book.rating) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -171,4 +172,40 @@ fun BookDetailScreen(
             }
         }
     }
+    // Delete conformation dialogue
+    if (showDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog = false },
+            title = {
+                Text("Delete Book")
+            },
+            text = {
+                Text("Are you sure you want to delete \"${book.title}\"? This action cannot be undone.")
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        onDelete(book.id)
+                        showDeleteDialog = false
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.error
+                    )
+                ) {
+                    Text(
+                        text = "Delete",
+                        color = MaterialTheme.colorScheme.onError
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { showDeleteDialog = false }
+                ) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
 }
+
