@@ -39,6 +39,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BookTrackerTheme {
+                BookTrackerApp()
+            }
+        }
+    }
+}
                 var showAddScreen by remember { mutableStateOf(false) }
                 var selectedBook by remember { mutableStateOf<Book?>(null) }
 
