@@ -277,6 +277,16 @@ fun BookCard(
                         )
                     }
 
+                    LinearProgressIndicator(
+                        progress = { book.progress / 100f },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 4.dp),
+                        color = MaterialTheme.colorScheme.primary,
+                        trackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+                    )
+                }
+
                         if (book.status == BookStatus.READING) {
                             Text(
                                 text = "${book.progress}",
