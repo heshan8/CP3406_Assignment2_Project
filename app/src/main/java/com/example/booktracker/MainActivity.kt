@@ -109,6 +109,21 @@ fun BookListScreen(
         modifier = modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
+        // Currently Reading Section
+        if (readingBooks.isNotEmpty()) {
+            item {
+                SectionHeader(
+                    title = "Currently Reading",
+                    count = readingBooks.size,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
+            items(readingBooks) { book ->
+                BookCard(book = book, onClick = { onBookClick(book) })
+            }
+
+            item { Spacer(modifier = Modifier.height(16.dp)) }
+        }
         }
     }
 
