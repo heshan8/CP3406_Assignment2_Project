@@ -27,15 +27,6 @@ import com.example.booktracker.data.BookStatus
 import com.example.booktracker.ui.theme.screens.AddBookScreen
 import com.example.booktracker.ui.theme.screens.BookDetailScreen
 
-
-data class Book(
-    val title: String,
-    val status: String,
-    val rating: Int,
-    val notes: String,
-    val progress: Int = 0
-)
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
