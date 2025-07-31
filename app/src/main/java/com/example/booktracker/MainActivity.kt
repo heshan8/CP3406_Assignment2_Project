@@ -139,7 +139,7 @@ fun BookListScreen(
 
             item { Spacer(modifier = Modifier.height(16.dp)) }
         }
-        
+
         // Section for finished books
         if (finishedBooks.isNotEmpty()) {
             item {
@@ -152,8 +152,14 @@ fun BookListScreen(
                 BookCard(book = book, onClick = { onBookClick(book) })
             }
         }
-        }
     }
+
+        // Empty state if there are no books
+        if (bookList.isEmpty()) {
+            item {
+                EmptyBookListState(modifier = Modifier.fillMaxWidth())
+    }
+}
 
 @Composable
 fun BookCard(
