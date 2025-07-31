@@ -12,6 +12,7 @@ import com.example.booktracker.data.BookStatus
 fun BookDetailScreen(
     book: Book,
     onSave: (Book) -> Unit,
+    onDelete: (String) -> Unit,
     onCancel: () -> Unit
 ) {
     var notes by remember { mutableStateOf(book.notes) }
