@@ -25,11 +25,20 @@ val Typography = Typography(
         lineHeight = 26.sp,
         letterSpacing = 0.15.sp
     ),
+    // Book state (Currently reading, To Read. etc.)
     labelSmall = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Medium,
         fontSize = 11.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
+    ),
+
+    // Secondary text (progress, rating, etc.)
+    bodyMedium = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        lineHeight = 22.sp,
+        letterSpacing = 0.25.sp
     )
-)
