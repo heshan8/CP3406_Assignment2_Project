@@ -14,15 +14,15 @@ import androidx.compose.ui.graphics.Color
 import com.example.booktracker.ui.theme.*
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Teal80,
-    secondary = Orange80,
-    tertiary = Coral80
+    primary = ForestGreen80,
+    secondary = Gold80,
+    tertiary = Sage80
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Teal40,
-    secondary = Orange40,
-    tertiary = Coral40
+    primary = ForestGreen40,
+    secondary = Gold40,
+    tertiary = Sage40
 )
 
     /* Other default colors to override
