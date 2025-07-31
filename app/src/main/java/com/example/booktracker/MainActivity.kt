@@ -265,6 +265,16 @@ fun BookCard(
             // Book status info
             when (book.status) {
                 BookStatus.READING -> {
+                    // Show genre if available
+                    if (book.genre.isNotEmpty()) {
+                        Text(
+                            text = book.genre,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(bottom = 4.dp)
+                        )
+                    }
+
                 // Reading progress bar
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -290,6 +300,15 @@ fun BookCard(
                 }
 
                 BookStatus.FINISHED -> {
+                    // Show genre if available
+                    if (book.genre.isNotEmpty()) {
+                        Text(
+                            text = book.genre,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(bottom = 4.dp)
+                        )
+                    }
                     if (book.rating > 0) {
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
