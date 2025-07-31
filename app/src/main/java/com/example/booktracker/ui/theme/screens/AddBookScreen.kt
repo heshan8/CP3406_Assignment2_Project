@@ -26,8 +26,10 @@ fun AddBookScreen(
 
     Column(
         modifier = Modifier
+            .fillMaxSize()
             .padding(WindowInsets.safeDrawing.asPaddingValues())
-            .padding(16.dp)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Top
     ) {
         Text(
             text = "Add a New Book",
