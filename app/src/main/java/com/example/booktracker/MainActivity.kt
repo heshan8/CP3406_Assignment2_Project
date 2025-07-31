@@ -22,6 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import com.example.booktracker.data.BookRepository
+import com.example.booktracker.data.BookStatus
 import com.example.booktracker.ui.theme.screens.AddBookScreen
 import com.example.booktracker.ui.theme.screens.BookDetailScreen
 
@@ -178,10 +179,33 @@ fun BookCard(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(bottom = 4.dp)
             )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = book.status.displayName,
+                    style = MaterialTheme.typography.bodySmall
+                )
+
+                if (book.status == BookStatus.READING) {
+                    Text(
+                        text(
+                            text = "${book.progress}",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                } else if (book.status == BookStatus.FINISHED && book.rating > 0) {
+                    Text(
+                        text = "★".repeat(book.rating),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
         }
     }
-
-    }
+}
 
 
 
