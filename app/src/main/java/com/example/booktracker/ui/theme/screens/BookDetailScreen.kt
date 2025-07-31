@@ -5,7 +5,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.booktracker.Book
+import com.example.booktracker.data.Book
+import com.example.booktracker.data.BookStatus
 
 @Composable
 fun BookDetailScreen(
@@ -15,47 +16,137 @@ fun BookDetailScreen(
 ) {
     var notes by remember { mutableStateOf(book.notes) }
     var progress by remember { mutableStateOf(book.progress) }
+    var status by remember { mutableStateOf(book.status) }
+    var rating by remember { mutableStateOf(book.rating) }
 
-    Column(modifier = Modifier
-        .padding(WindowInsets.safeDrawing.asPaddingValues())
-        .padding(16.dp)) {
+    Column(
+        modifier = Modifier
+            .padding(WindowInsets.safeDrawing.asPaddingValues())
+            .padding(16.dp)
+    ) {
 
-        Text(book.title, style = MaterialTheme.typography.headlineSmall)
-        Text("Status: ${book.status}", style = MaterialTheme.typography.bodyMedium)
-        Text("Rating: ${book.rating}★", style = MaterialTheme.typography.bodySmall)
+        Text(
+            text = book.title,
+            style = MaterialTheme.typography.headlineSmall,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
 
-        Spacer(Modifier.height(16.dp))
+        Text(
+            text = "by ${book.author}",
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
+
+        if ( book.genre.isNotEmpty()) {
+            Text(
+                text = "Genre: ${book.genre}",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+        }
+
+        // Book Satus Dropdown
+        Text(
+            text = "Status",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        StatusDropdown(
+            selected = status,
+            onSelected = { status = it },
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        // Rating section for finished books
+        if (status == BookStatus.FINISHED) {
+            Text(
+                text = "Rating",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            RatingBar(
+                rating = rating,
+                onRatingChange = { rating = it},
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+        }
+        // Progress Section for currently reading books
+        if (status == BookStatus.READING) {
+            Text(
+                text = "Progress: $progress%",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            Slider(
+                value = progress.toFloat(),
+                onValueChange = { progress = it.toInt() },
+                valueRange = 0f..100f,
+                modifier = Modifier.padding(bottom = 16.dp)
+
+            )
+        }
+
+        // Notes Field
+        Text(
+            text = "notes",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
 
         OutlinedTextField(
             value = notes,
             onValueChange = { notes = it },
-            label = { Text("Notes") },
-            modifier = Modifier.fillMaxWidth()
+            label = { Text("Your thoughts...") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 24.dp),
+            minLines = 4,
+            maxLines = 8
         )
 
-        Spacer(Modifier.height(16.dp))
-
-        Text("Progress: $progress%", style = MaterialTheme.typography.bodyMedium)
-
-        Slider(
-            value = progress.toFloat(),
-            onValueChange = { progress = it.toInt() },
-            valueRange = 0f..100f
-        )
-
-        Spacer(Modifier.height(24.dp))
-
-        Row {
-            Button(onClick = {
-                onSave(book.copy(notes = notes, progress = progress))
-            }) {
-                Text("Save")
+        // Save Buttons
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            OutlinedButton(
+                onClick = onCancel,
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("Cancel")
             }
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Button(
+                onClick = {
+                    val finalProgress = when (status) {
+                        BookStatus.FINISHED -> 100
+                        BookStatus.READING -> progress
+                        BookStatus.TO_READ -> 0
+                    }
 
-            OutlinedButton(onClick = onCancel) {
-                Text("Cancel")
+                    onSave(
+                        book.copy(
+                            notes = notes,
+                            progress = finalProgress,
+                            status = status,
+                            rating = if (status == BookStatus.FINISHED) rating else 0,
+                            dateFinished = if (status == BookStatus.FINISHED && book.dateFinished == null) {
+                                System.currentTimeMillis()
+                            } else if (status != BookStatus.FINISHED) {
+                                null
+                            } else {
+                                book.dateFinished
+                            }
+                        )
+                    )
+                },
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("Save")
             }
         }
     }
