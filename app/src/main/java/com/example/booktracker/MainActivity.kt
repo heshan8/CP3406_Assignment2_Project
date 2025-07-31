@@ -107,6 +107,17 @@ fun BookTrackerApp() {
             }
 
             else -> {
+                // Filter books based on search id
+                val filteredBooks = if (searchQuery.isEmpty()) {
+                    repository.books
+                } else {
+                    repository.books.filter { book ->
+                        book.title.contains(searchQuery, ignoreCase = true) ||
+                        book.author.contains(searchQuery, ignoreCase = true) ||
+                        book.genre.contains(searchQuery, ignoreCase = true)
+                    }
+                }
+
                 BookListScreen(
                     bookList = repository.books,
                     modifier = Modifier.padding(innerPadding),
