@@ -152,14 +152,42 @@ fun BookListScreen(
                 BookCard(book = book, onClick = { onBookClick(book) })
             }
         }
-    }
 
         // Empty state if there are no books
         if (bookList.isEmpty()) {
             item {
                 EmptyBookListState(modifier = Modifier.fillMaxWidth())
+            }
+        }
     }
 }
+
+@Composable
+fun SectionHeader(
+    title: String,
+    count: Int,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.primary,
+            fontWeight = FontWeight.SemiBold
+        )
+
+        Text(
+            text = "$count book${if (count != 1) "s" else ""}",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
 
 @Composable
 fun BookCard(
