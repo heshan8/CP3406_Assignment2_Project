@@ -189,6 +189,14 @@ fun SectionHeader(
         )
     }
 
+    // Add divider line
+    HorizontalDivider(
+        modifier = Modifier.padding(vertical = 4.dp),
+        thickness = 1.dp,
+        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+    )
+}
+
 @Composable
 fun BookCard(
     book: Book,
