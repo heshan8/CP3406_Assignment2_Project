@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import com.example.booktracker.data.Book
 import com.example.booktracker.data.BookRepository
 import com.example.booktracker.data.BookStatus
 import com.example.booktracker.ui.theme.screens.AddBookScreen
