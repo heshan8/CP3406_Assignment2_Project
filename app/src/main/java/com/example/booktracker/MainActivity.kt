@@ -64,7 +64,7 @@ fun BookTrackerApp() {
             showAddScreen -> {
                 AddBookScreen(
                     onSave = { newBook ->
-                        bookList.add(newBook)
+                        repository.addBook(newBook)
                         showAddScreen = false
                     },
                     onCancel = { showAddScreen = false }
@@ -75,8 +75,7 @@ fun BookTrackerApp() {
                 BookDetailScreen(
                     book = selectedBook!!,
                     onSave = { updatedBook ->
-                        val index = bookList.indexOfFirst { it.title == selectedBook!!.title }
-                        if (index != -1) bookList[index] = updatedBook
+                        repository.updateBook(updatedBook)
                         selectedBook = null
                     },
                     onCancel = { selectedBook = null }
@@ -85,21 +84,13 @@ fun BookTrackerApp() {
 
             else -> {
                 BookListScreen(
-                    bookList = bookList,
+                    bookList = repository.books,
                     modifier = Modifier.padding(innerPadding),
-                    onAddClick = { showAddScreen = true },
                     onBookClick = { selectedBook = it }
                 )
             }
         }
-
-
     }
-    }
-
-
-}
-}
 }
 
 
