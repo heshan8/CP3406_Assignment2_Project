@@ -287,21 +287,29 @@ fun BookCard(
                     )
                 }
 
-                        if (book.status == BookStatus.READING) {
-                            Text(
-                                text = "${book.progress}",
-                                style = MaterialTheme.typography.bodySmall
-                                )
-                        } else if (book.status == BookStatus.FINISHED && book.rating > 0) {
+                BookStatus.FINISHED -> {
+                    if (book.rating > 0) {
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
                             Text(
                                 text = "★".repeat(book.rating),
-                                style = MaterialTheme.typography.bodySmall,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.primary
+                            )
+
+                            Text(
+                                text = "${book.rating}/5 stars",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
                 }
-            }
+
+                
+
 }
 
 
