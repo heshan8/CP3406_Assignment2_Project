@@ -41,4 +41,23 @@ val Typography = Typography(
         fontSize = 16.sp,
         lineHeight = 22.sp,
         letterSpacing = 0.25.sp
+    ),
+
+    // Small text (genre, book count)
+    bodySmall = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        lineHeight = 18.sp,
+        letterSpacing = 0.4.sp
+    ),
+
+    // Screen titles (Add a New Book, etc.)
+    headlineSmall = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 26.sp,
+        lineHeight = 34.sp,
+        letterSpacing = 0.sp
     )
+)
