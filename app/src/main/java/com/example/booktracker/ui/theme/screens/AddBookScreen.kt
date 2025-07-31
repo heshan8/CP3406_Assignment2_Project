@@ -102,7 +102,7 @@ fun AddBookScreen(
         }
 
         // Progress Section for currently reading books
-        if (status == BookStatus.READING)
+        if (status == BookStatus.READING) {
             Text(
                 text = "Progress: $progress%",
                 style = MaterialTheme.typography.bodyMedium,
@@ -116,8 +116,12 @@ fun AddBookScreen(
                 modifier = Modifier.padding(vertical = 8.dp)
             )
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         // Buttons
-        Row(modifier = Modifier
+        Row(
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -161,6 +165,7 @@ fun AddBookScreen(
             }
         }
     }
+}
 
 @Composable
 fun DropdownMenuBox(selected: String, onSelected: (String) -> Unit) {
