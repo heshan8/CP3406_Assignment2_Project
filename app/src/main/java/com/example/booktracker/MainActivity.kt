@@ -258,39 +258,40 @@ fun BookCard(
                 text = "by ${book.author}",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(bottom = 4.dp)
+                modifier = Modifier.padding(bottom = 8.dp)
             )
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = book.status.displayName,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = when (book.status) {
-                        BookStatus.FINISHED -> MaterialTheme.colorScheme.secondary
-                        BookStatus.READING -> MaterialTheme.colorScheme.primary
-                        BookStatus.TO_READ -> MaterialTheme.colorScheme.tertiary
-                    },
-                    fontWeight = FontWeight.Medium
-                )
-
-                if (book.status == BookStatus.READING) {
-                    Text(
-                        text = "${book.progress}",
-                        style = MaterialTheme.typography.bodySmall
+            // Book status info
+            when (book.status) {
+                BookStatus.READING -> {
+                // Reading progress bar
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = book.status.displayName,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.primary
                         )
-                } else if (book.status == BookStatus.FINISHED && book.rating > 0) {
-                    Text(
-                        text = "★".repeat(book.rating),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                    }
+
+                        if (book.status == BookStatus.READING) {
+                            Text(
+                                text = "${book.progress}",
+                                style = MaterialTheme.typography.bodySmall
+                                )
+                        } else if (book.status == BookStatus.FINISHED && book.rating > 0) {
+                            Text(
+                                text = "★".repeat(book.rating),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
                 }
             }
-        }
-    }
 }
 
 
