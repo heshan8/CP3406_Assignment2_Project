@@ -239,9 +239,9 @@ fun BookCard(
             .clickable { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = when (book.status) {
-                BookStatus.FINISHED -> MaterialTheme.colorScheme.secondaryContainer
-                BookStatus.READING -> MaterialTheme.colorScheme.primaryContainer
-                BookStatus.TO_READ -> MaterialTheme.colorScheme.surfaceVariant
+                BookStatus.FINISHED -> MaterialTheme.colorScheme.surfaceVariant
+                BookStatus.READING -> MaterialTheme.colorScheme.tertiaryContainer
+                BookStatus.TO_READ -> MaterialTheme.colorScheme.secondaryContainer
             }
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
