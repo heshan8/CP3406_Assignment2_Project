@@ -308,10 +308,19 @@ fun BookCard(
                     }
                 }
 
-                
-
+                BookStatus.TO_READ -> {
+                    if (book.genre.isNotEmpty()) {
+                        Text(
+                            text = book.genre,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            }
+        }
+    }
 }
-
 
 
 
