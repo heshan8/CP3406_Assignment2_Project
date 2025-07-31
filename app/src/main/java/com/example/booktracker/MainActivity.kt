@@ -21,6 +21,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import com.example.booktracker.data.Book
+import com.example.booktracker.data.BookRepository
+import com.example.booktracker.data.BookStatus
 import com.example.booktracker.ui.theme.screens.AddBookScreen
 import com.example.booktracker.ui.theme.screens.BookDetailScreen
 
@@ -39,104 +42,135 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BookTrackerTheme {
-                var showAddScreen by remember { mutableStateOf(false) }
-                var selectedBook by remember { mutableStateOf<Book?>(null) }
-
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    floatingActionButton = {
-                        FloatingActionButton(onClick = { showAddScreen = true }) {
-                            Icon(Icons.Default.Add, contentDescription = "Add Book")
-                        }
-                    }
-                ) { innerPadding ->
-                    val bookList = remember { mutableStateListOf(
-                        Book("Atomic Habits", "Reading", 5, "Taking notes", 30),
-                        Book("1984", "Finished", 4, "Chilling ending", 100),
-                        Book("The Hobbit", "To Read", 0, "", 0),
-                        Book("Deep Work", "Reading", 3, "Good focus tips", 45),
-                        Book("Dune", "To Read", 0, "", 0),
-                        Book("The Midnight Library", "Finished", 4, "Really makes you reflect", 100),
-
-                    ) }
-
-
-
-                    when {
-                        showAddScreen -> {
-                            AddBookScreen(
-                                onSave = { newBook ->
-                                    bookList.add(newBook)
-                                    showAddScreen = false
-                                },
-                                onCancel = { showAddScreen = false }
-                            )
-                        }
-
-                        selectedBook != null -> {
-                            BookDetailScreen(
-                                book = selectedBook!!,
-                                onSave = { updatedBook ->
-                                    val index = bookList.indexOfFirst { it.title == selectedBook!!.title }
-                                    if (index != -1) bookList[index] = updatedBook
-                                    selectedBook = null
-                                },
-                                onCancel = { selectedBook = null }
-                            )
-                        }
-
-                        else -> {
-                            BookListScreen(
-                                bookList = bookList,
-                                modifier = Modifier.padding(innerPadding),
-                                onAddClick = { showAddScreen = true },
-                                onBookClick = { selectedBook = it }
-                            )
-                        }
-                    }
-
-
-                }
-                    }
-
-
-                }
+                BookTrackerApp()
             }
         }
+    }
+}
 
+@Composable
+fun BookTrackerApp() {
+    val repository = remember { BookRepository() }
+    var showAddScreen by remember { mutableStateOf(false) }
+    var selectedBook by remember { mutableStateOf<Book?>(null) }
 
-    @Composable
-    fun BookListScreen(bookList: List<Book>,
-                       modifier: Modifier = Modifier,
-                       onAddClick: () -> Unit,
-                       onBookClick: (Book) -> Unit ) {
-        LazyColumn(modifier = modifier.padding(16.dp)) {
-            items(bookList) { book ->
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                        .clickable { onBookClick(book) },
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        floatingActionButton = {
+            FloatingActionButton(onClick = { showAddScreen = true }) {
+                Icon(Icons.Default.Add, contentDescription = "Add Book")
+            }
+        }
+    ) { innerPadding ->
+        when {
+            showAddScreen -> {
+                AddBookScreen(
+                    onSave = { newBook ->
+                        repository.addBook(newBook)
+                        showAddScreen = false
+                    },
+                    onCancel = { showAddScreen = false }
+                )
+            }
 
-                    colors = CardDefaults.cardColors(
-                        containerColor = when (book.status) {
-                            "Finished" -> MaterialTheme.colorScheme.secondaryContainer
-                            "Reading" -> MaterialTheme.colorScheme.primaryContainer
-                            else -> MaterialTheme.colorScheme.surfaceVariant
-                        }
-                    ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(book.title, style = MaterialTheme.typography.titleMedium)
-                        Text("Status: ${book.status}")
-                        Text("Rating: ${book.rating}★")
-                    }
+            selectedBook != null -> {
+                BookDetailScreen(
+                    book = selectedBook!!,
+                    onSave = { updatedBook ->
+                        repository.updateBook(updatedBook)
+                        selectedBook = null
+                    },
+                    onCancel = { selectedBook = null }
+                )
+            }
+
+            else -> {
+                BookListScreen(
+                    bookList = repository.books,
+                    modifier = Modifier.padding(innerPadding),
+                    onBookClick = { selectedBook = it }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun BookListScreen(
+    bookList: List<Book>,
+    modifier: Modifier = Modifier,
+    onBookClick: (Book) -> Unit
+) {
+    LazyColumn(modifier = modifier.padding(16.dp)) {
+        items(bookList) { book ->
+            BookCard(
+                book = book,
+                onClick = { onBookClick(book) }
+            )
+        }
+    }
+}
+
+@Composable
+fun BookCard(
+    book: Book,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+            .clickable { onClick() },
+        colors = CardDefaults.cardColors(
+            containerColor = when (book.status) {
+                BookStatus.FINISHED -> MaterialTheme.colorScheme.secondaryContainer
+                BookStatus.READING -> MaterialTheme.colorScheme.primaryContainer
+                BookStatus.TO_READ -> MaterialTheme.colorScheme.surfaceVariant
+            }
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = book.title,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+
+            Text(
+                text = "by ${book.author}",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = book.status.displayName,
+                    style = MaterialTheme.typography.bodySmall
+                )
+
+                if (book.status == BookStatus.READING) {
+                    Text(
+                        text = "${book.progress}",
+                        style = MaterialTheme.typography.bodySmall
+                        )
+                } else if (book.status == BookStatus.FINISHED && book.rating > 0) {
+                    Text(
+                        text = "★".repeat(book.rating),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.primary
+                    )
                 }
             }
         }
     }
+}
+
 
 
 
