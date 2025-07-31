@@ -119,7 +119,7 @@ fun BookTrackerApp() {
                 }
 
                 BookListScreen(
-                    bookList = repository.books,
+                    bookList = filteredBooks,
                     modifier = Modifier.padding(innerPadding),
                     onBookClick = { selectedBook = it }
                 )
