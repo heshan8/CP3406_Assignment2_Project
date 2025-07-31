@@ -80,6 +80,10 @@ fun BookTrackerApp() {
                         repository.updateBook(updatedBook)
                         selectedBook = null
                     },
+                    onDelete = { bookId ->
+                        repository.deleteBook(bookId)
+                        selectedBook = null
+                    },
                     onCancel = { selectedBook = null }
                 )
             }
