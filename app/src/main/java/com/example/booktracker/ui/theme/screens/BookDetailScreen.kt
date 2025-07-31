@@ -128,16 +128,25 @@ fun BookDetailScreen(
                         BookStatus.TO_READ -> 0
                     }
 
-
-
-                onSave(book.copy(notes = notes, progress = progress))
-            }) {
+                    onSave(
+                        book.copy(
+                            notes = notes,
+                            progress = finalProgress,
+                            status = status,
+                            rating = if (status == BookStatus.FINISHED) rating else 0,
+                            dateFinished = if (status == BookStatus.FINISHED && book.dateFinished == null) {
+                                System.currentTimeMillis()
+                            } else if (status != BookStatus.FINISHED) {
+                                null
+                            } else {
+                                book.dateFinished
+                            }
+                        )
+                    )
+                },
+                modifier = Modifier.weight(1f)
+            ) {
                 Text("Save")
-            }
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-
             }
         }
     }
