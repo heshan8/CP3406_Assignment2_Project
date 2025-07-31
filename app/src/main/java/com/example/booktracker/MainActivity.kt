@@ -111,49 +111,6 @@ fun BookListScreen(
     }
 }
 
-    @Composable
-    fun BookListScreen(bookList: List<Book>,
-                       modifier: Modifier = Modifier,
-                       onAddClick: () -> Unit,
-                       onBookClick: (Book) -> Unit ) {
-        LazyColumn(modifier = modifier.padding(16.dp)) {
-            items(bookList) { book ->
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                        .clickable { onBookClick(book) },
-
-                    colors = CardDefaults.cardColors(
-                        containerColor = when (book.status) {
-                            "Finished" -> MaterialTheme.colorScheme.secondaryContainer
-                            "Reading" -> MaterialTheme.colorScheme.primaryContainer
-                            else -> MaterialTheme.colorScheme.surfaceVariant
-                        }
-                    ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(book.title, style = MaterialTheme.typography.titleMedium)
-                        Text("Status: ${book.status}")
-                        Text("Rating: ${book.rating}★")
-                    }
-                ),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                shape = RoundedCornerShape(12.dp)
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(book.title, style = MaterialTheme.typography.titleMedium)
-                    Text("Status: ${book.status}")
-                    Text("Rating: ${book.rating}★")
-                }
-            }
-        }
-    }
-}
-
-// TODO: Complete BookCard
 @Composable
 fun BookCard(
     book: Book,
