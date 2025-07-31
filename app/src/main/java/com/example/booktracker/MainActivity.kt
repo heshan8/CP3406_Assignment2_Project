@@ -26,6 +26,7 @@ import com.example.booktracker.data.BookRepository
 import com.example.booktracker.data.BookStatus
 import com.example.booktracker.ui.theme.screens.AddBookScreen
 import com.example.booktracker.ui.theme.screens.BookDetailScreen
+import androidx.compose.ui.text.font.FontWeight
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,9 +115,9 @@ fun BookCard(
             .clickable { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = when (book.status) {
-                BookStatus.FINISHED -> MaterialTheme.colorScheme.secondaryContainer
-                BookStatus.READING -> MaterialTheme.colorScheme.primaryContainer
-                BookStatus.TO_READ -> MaterialTheme.colorScheme.surfaceVariant
+                BookStatus.FINISHED -> MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f)
+                BookStatus.READING -> MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
+                BookStatus.TO_READ -> MaterialTheme.colorScheme.tertiary.copy(alpha = 0.15f)
             }
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
@@ -142,7 +143,13 @@ fun BookCard(
             ) {
                 Text(
                     text = book.status.displayName,
-                    style = MaterialTheme.typography.bodySmall
+                    style = MaterialTheme.typography.bodySmall,
+                    color = when (book.status) {
+                        BookStatus.FINISHED -> MaterialTheme.colorScheme.secondary
+                        BookStatus.READING -> MaterialTheme.colorScheme.primary
+                        BookStatus.TO_READ -> MaterialTheme.colorScheme.tertiary
+                    },
+                    fontWeight = FontWeight.Medium
                 )
 
                 if (book.status == BookStatus.READING) {
