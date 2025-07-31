@@ -15,14 +15,10 @@ import com.example.booktracker.ui.theme.*
 
 private val DarkColorScheme = darkColorScheme(
     primary = ForestGreen80,
-    secondary = Gold80,
-    tertiary = Brown80  // Changed from Sage80
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = ForestGreen40,
-    secondary = Gold40,
-    tertiary = Brown40  // Changed from Sage40
 )
 
     /* Other default colors to override
