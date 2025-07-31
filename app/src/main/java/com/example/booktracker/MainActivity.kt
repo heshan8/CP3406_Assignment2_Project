@@ -100,15 +100,17 @@ fun BookListScreen(
     modifier: Modifier = Modifier,
     onBookClick: (Book) -> Unit
 ) {
-    LazyColumn(modifier = modifier.padding(16.dp)) {
-        items(bookList) { book ->
-            BookCard(
-                book = book,
-                onClick = { onBookClick(book) }
-            )
+    // Group books buy book status
+    val readingBooks = bookList.filter { it.status == BookStatus.READING }
+    val toReadBooks = bookList.filter { it.status == BookStatus.TO_READ }
+    val finishedBooks = bookList.filter { it.status == BookStatus.FINISHED }
+
+    LazyColumn(
+        modifier = modifier.padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
         }
     }
-}
 
 @Composable
 fun BookCard(
