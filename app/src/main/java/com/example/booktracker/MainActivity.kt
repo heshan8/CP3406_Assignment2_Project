@@ -34,7 +34,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.draw.clip
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.*
+import androidx.compose.ui.text.input.TextFieldValue
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,9 +56,24 @@ fun BookTrackerApp() {
     val repository = remember { BookRepository() }
     var showAddScreen by remember { mutableStateOf(false) }
     var selectedBook by remember { mutableStateOf<Book?>(null) }
+    var isSearching by remember { mutableStateOf(false) }
+    var searchQuery by remember { mutableStateOf("") }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
+        topBar = {
+            if (!showAddScreen && selectedBook == null) {
+                SearchTopBar(
+                    isSearching = isSearching,
+                    searchQuery = searchQuery,
+                    onSearchQueryChange = { searchQuery = it },
+                    onSearchToggle = {
+                        isSearching = !isSearching
+                        if (!isSearching) searchQuery = ""
+                    }
+                )
+            }
+        },
         floatingActionButton = {
             FloatingActionButton(onClick = { showAddScreen = true }) {
                 Icon(Icons.Default.Add, contentDescription = "Add Book")
@@ -89,14 +107,63 @@ fun BookTrackerApp() {
             }
 
             else -> {
+                // Filter books based on search id
+                val filteredBooks = if (searchQuery.isEmpty()) {
+                    repository.books
+                } else {
+                    repository.books.filter { book ->
+                        book.title.contains(searchQuery, ignoreCase = true) ||
+                        book.author.contains(searchQuery, ignoreCase = true) ||
+                        book.genre.contains(searchQuery, ignoreCase = true)
+                    }
+                }
+
                 BookListScreen(
-                    bookList = repository.books,
+                    bookList = filteredBooks,
                     modifier = Modifier.padding(innerPadding),
                     onBookClick = { selectedBook = it }
                 )
             }
         }
     }
+}
+
+//Search bar composable
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SearchTopBar(
+    isSearching: Boolean,
+    searchQuery: String,
+    onSearchQueryChange: (String) -> Unit,
+    onSearchToggle: () -> Unit
+) {
+    TopAppBar(
+        title = {
+            if (isSearching) {
+                OutlinedTextField(
+                    value = searchQuery,
+                    onValueChange = onSearchQueryChange,
+                    placeholder = { Text("Search books...") },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                    )
+                )
+            } else {
+                Text("My Books")
+            }
+        },
+        actions = {
+            IconButton(onClick = onSearchToggle) {
+                Icon(
+                    imageVector = if (isSearching) Icons.Default.Close else Icons.Default.Search,
+                    contentDescription = if (isSearching) "Close search" else "Search books"
+                )
+            }
+        }
+    )
 }
 
 @Composable
