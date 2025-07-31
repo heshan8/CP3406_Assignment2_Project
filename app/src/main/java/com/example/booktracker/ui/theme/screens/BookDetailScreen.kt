@@ -39,7 +39,7 @@ fun BookDetailScreen(
             modifier = Modifier.padding(bottom = 4.dp)
         )
 
-        if ( book.genre.isNotEmpty()) {
+        if (book.genre.isNotEmpty()) {
             Text(
                 text = "Genre: ${book.genre}",
                 style = MaterialTheme.typography.bodyMedium,
@@ -48,7 +48,7 @@ fun BookDetailScreen(
             )
         }
 
-        // Book Satus Dropdown
+        // Book Status Dropdown
         Text(
             text = "Status",
             style = MaterialTheme.typography.bodyMedium,
@@ -70,7 +70,7 @@ fun BookDetailScreen(
 
             RatingBar(
                 rating = rating,
-                onRatingChange = { rating = it},
+                onRatingChange = { rating = it },
                 modifier = Modifier.padding(bottom = 16.dp)
             )
         }
@@ -109,45 +109,65 @@ fun BookDetailScreen(
             maxLines = 8
         )
 
-        // Save Buttons
-        Row(
+        // Action Buttons
+        Column(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            OutlinedButton(
-                onClick = onCancel,
-                modifier = Modifier.weight(1f)
+            // Save and Cancel buttons
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Text("Cancel")
+                OutlinedButton(
+                    onClick = onCancel,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text("Cancel")
+                }
+
+                Button(
+                    onClick = {
+                        val finalProgress = when (status) {
+                            BookStatus.FINISHED -> 100
+                            BookStatus.READING -> progress
+                            BookStatus.TO_READ -> 0
+                        }
+
+                        onSave(
+                            book.copy(
+                                notes = notes,
+                                progress = finalProgress,
+                                status = status,
+                                rating = if (status == BookStatus.FINISHED) rating else 0,
+                                dateFinished = if (status == BookStatus.FINISHED && book.dateFinished == null) {
+                                    System.currentTimeMillis()
+                                } else if (status != BookStatus.FINISHED) {
+                                    null
+                                } else {
+                                    book.dateFinished
+                                }
+                            )
+                        )
+                    },
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text("Save")
+                }
             }
 
+            //Delete button
             Button(
-                onClick = {
-                    val finalProgress = when (status) {
-                        BookStatus.FINISHED -> 100
-                        BookStatus.READING -> progress
-                        BookStatus.TO_READ -> 0
-                    }
-
-                    onSave(
-                        book.copy(
-                            notes = notes,
-                            progress = finalProgress,
-                            status = status,
-                            rating = if (status == BookStatus.FINISHED) rating else 0,
-                            dateFinished = if (status == BookStatus.FINISHED && book.dateFinished == null) {
-                                System.currentTimeMillis()
-                            } else if (status != BookStatus.FINISHED) {
-                                null
-                            } else {
-                                book.dateFinished
-                            }
-                        )
-                    )
-                },
-                modifier = Modifier.weight(1f)
+                onClick = { showDeleteDialog = true },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.error
+                ),
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Save")
+                Text(
+                    text = "Delete Book",
+                    color = MaterialTheme.colorScheme.onError
+                )
             }
         }
     }
