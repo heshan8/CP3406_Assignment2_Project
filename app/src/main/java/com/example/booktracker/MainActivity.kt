@@ -56,9 +56,24 @@ fun BookTrackerApp() {
     val repository = remember { BookRepository() }
     var showAddScreen by remember { mutableStateOf(false) }
     var selectedBook by remember { mutableStateOf<Book?>(null) }
+    var isSearching by remember { mutableStateOf(false) }
+    var searchQuery by remember { mutableStateOf("") }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
+        topBar = {
+            if (!showAddScreen && selectedBook == null) {
+                SearchTopBar(
+                    isSearching = isSearching,
+                    searchQuery = searchQuery,
+                    onSearchQueryChange = { searchQuery = it },
+                    onSearchToggle = {
+                        isSearching = !isSearching
+                        if (!isSearching) searchQuery = ""
+                    }
+                )
+            }
+        },
         floatingActionButton = {
             FloatingActionButton(onClick = { showAddScreen = true }) {
                 Icon(Icons.Default.Add, contentDescription = "Add Book")
