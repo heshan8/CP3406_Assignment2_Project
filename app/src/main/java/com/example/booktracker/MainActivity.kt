@@ -124,6 +124,20 @@ fun BookListScreen(
 
             item { Spacer(modifier = Modifier.height(16.dp)) }
         }
+        // Books to be read section
+        if (toReadBooks.isNotEmpty()) {
+            item {
+                SectionHeader(
+                    title = "To Read",
+                    count = toReadBooks.size
+                )
+            }
+            items(toReadBooks) { book ->
+                BookCard(book = book, onClick = { onBookClick(book) })
+            }
+
+            item { Spacer(modifier = Modifier.height(16.dp)) }
+        }
         }
     }
 
