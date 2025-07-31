@@ -192,9 +192,8 @@ fun BookCard(
 
                 if (book.status == BookStatus.READING) {
                     Text(
-                        text(
-                            text = "${book.progress}",
-                            style = MaterialTheme.typography.bodySmall
+                        text = "${book.progress}",
+                        style = MaterialTheme.typography.bodySmall
                         )
                 } else if (book.status == BookStatus.FINISHED && book.rating > 0) {
                     Text(
