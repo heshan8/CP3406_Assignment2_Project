@@ -60,18 +60,6 @@ fun BookTrackerApp() {
             }
         }
     ) { innerPadding ->
-        val bookList = remember { mutableStateListOf(
-            Book("Atomic Habits", "Reading", 5, "Taking notes", 30),
-            Book("1984", "Finished", 4, "Chilling ending", 100),
-            Book("The Hobbit", "To Read", 0, "", 0),
-            Book("Deep Work", "Reading", 3, "Good focus tips", 45),
-            Book("Dune", "To Read", 0, "", 0),
-            Book("The Midnight Library", "Finished", 4, "Really makes you reflect", 100),
-
-        ) }
-
-
-
         when {
             showAddScreen -> {
                 AddBookScreen(
