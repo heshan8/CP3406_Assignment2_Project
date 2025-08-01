@@ -52,6 +52,19 @@ fun BookTrackerApp() {
     // Collect books from flow (this replaces repository.books list)
     val books by repository.books.collectAsState(initial = emptyList())
 
+    //Filtering the books based on search terms
+    val filteredBooks = remember(books, searchQuery) {
+        if (searchQuery.isEmpty()) {
+            books
+        } else {
+            books.filter { book ->
+                book.title.contains(searchQuery.trim(), ignoreCase = true)
+                book.author.contains(searchQuery.trim(), ignoreCase = true)
+                book.genre.contains(searchQuery.trim(), ignoreCase = true)
+            }
+        }
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
