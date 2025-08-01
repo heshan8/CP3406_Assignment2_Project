@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import com.example.booktracker.data.Book
 import com.example.booktracker.data.BookRepository
 import com.example.booktracker.data.BookDatabase
+import com.example.booktracker.data.ThemePreferences
 import com.example.booktracker.ui.theme.BookTrackerTheme
 import com.example.booktracker.ui.theme.screens.AddBookScreen
 import com.example.booktracker.ui.theme.screens.BookDetailScreen
@@ -57,7 +58,7 @@ fun BookTrackerApp() {
         var selectedBook by remember { mutableStateOf<Book?>(null) }
         var isSearching by remember { mutableStateOf(false) }
         var searchQuery by remember { mutableStateOf("") }
-       
+
         // Collect books from flow (this replaces repository.books list)
         val books by repository.books.collectAsState(initial = emptyList())
 
