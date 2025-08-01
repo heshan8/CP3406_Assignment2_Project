@@ -38,7 +38,12 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun BookTrackerApp() {
-    val repository = remember { BookRepository() }
+    //Initialize database and book repository
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val repository = remember {
+        val database = BookDatabase.getDatabase(context)
+        BookRepository(database.bookDao())
+    }
     var showAddScreen by remember { mutableStateOf(false) }
     var selectedBook by remember { mutableStateOf<Book?>(null) }
     var isSearching by remember { mutableStateOf(false) }
