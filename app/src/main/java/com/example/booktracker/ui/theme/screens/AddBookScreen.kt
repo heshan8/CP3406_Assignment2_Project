@@ -22,7 +22,7 @@ fun AddBookScreen(
     var notes by remember { mutableStateOf("") }
     var progress by remember { mutableIntStateOf(0) }
 
-    val isFormValid = title.isNotBlank() && author.isNotBlank()
+    val isFormValid = title.trim().isNotBlank() && author.isNotBlank()
 
     Column(
         modifier = Modifier
@@ -144,11 +144,11 @@ fun AddBookScreen(
 
                         onSave(
                             Book(
-                                title = title,
-                                author = author,
-                                genre = genre,
+                                title = title.trim(),
+                                author = author.trim(),
+                                genre = genre.trim(),
                                 status = status,
-                                notes = notes,
+                                notes = notes.trim(),
                                 rating = if (status == BookStatus.FINISHED) rating else 0,
                                 // rating is only kept if the book is marked FINISHED, otherwise it's 0.
                                 progress = finalProgress,
