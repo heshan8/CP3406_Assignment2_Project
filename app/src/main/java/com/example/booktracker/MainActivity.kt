@@ -90,7 +90,10 @@ fun BookTrackerApp() {
             showAddScreen -> {
                 AddBookScreen(
                     onSave = { newBook ->
-                        repository.addBook(newBook)
+                        //Wrap call in coroutine
+                        (context as ComponentActivity).lifecycleScope.launch {
+                            repository.addBook(newBook)
+                        }
                         showAddScreen = false
                     },
                     onCancel = { showAddScreen = false }
@@ -101,11 +104,17 @@ fun BookTrackerApp() {
                 BookDetailScreen(
                     book = selectedBook!!,
                     onSave = { updatedBook ->
-                        repository.updateBook(updatedBook)
+                        //Wrap call in coroutine
+                        (context as ComponentActivity).lifecycleScope.launch {
+                            repository.updateBook(updatedBook)
+                        }
                         selectedBook = null
                     },
                     onDelete = { bookId ->
-                        repository.deleteBook(bookId)
+                        //Wrap call in coroutine
+                        (context as ComponentActivity).lifecycleScope.launch {
+                            repository.deleteBook(bookId)
+                        }
                         selectedBook = null
                     },
                     onCancel = { selectedBook = null }
