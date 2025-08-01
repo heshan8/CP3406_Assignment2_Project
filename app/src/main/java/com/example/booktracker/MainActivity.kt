@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import com.example.booktracker.data.Book
@@ -29,7 +30,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            BookTrackerTheme {
+            BookTrackerTheme(darkTheme = isDarkMode) {
                 BookTrackerApp()
             }
         }
@@ -48,6 +49,11 @@ fun BookTrackerApp() {
     var selectedBook by remember { mutableStateOf<Book?>(null) }
     var isSearching by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
+    var isDarkMode by remember { mutableStateOf(false) }
+    val systemDarkMode = isSystemInDarkTheme()
+    LaunchedEffect(Unit) {
+        isDarkMode = systemDarkMode
+    }
 
     // Collect books from flow (this replaces repository.books list)
     val books by repository.books.collectAsState(initial = emptyList())
@@ -76,7 +82,9 @@ fun BookTrackerApp() {
                     onSearchToggle = {
                         isSearching = !isSearching
                         if (!isSearching) searchQuery = ""
-                    }
+                    },
+                    isDarkMode = isDarkMode,
+                    onDarkModeToggle = { isDarkMode = !isDarkMode }
                 )
             }
         },
