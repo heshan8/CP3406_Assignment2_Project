@@ -1,8 +1,12 @@
 package com.example.booktracker.data
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.UUID
 
+@Entity(tableName = "books")
 data class Book(
+    @PrimaryKey
     val id: String = UUID.randomUUID().toString(),
     val title: String,
     val author: String = "",

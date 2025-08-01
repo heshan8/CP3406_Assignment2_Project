@@ -11,14 +11,18 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import com.example.booktracker.data.Book
 import com.example.booktracker.data.BookRepository
+import com.example.booktracker.data.BookDatabase
 import com.example.booktracker.ui.theme.BookTrackerTheme
 import com.example.booktracker.ui.theme.screens.AddBookScreen
 import com.example.booktracker.ui.theme.screens.BookDetailScreen
 import com.example.booktracker.ui.theme.components.BookListScreen
 import com.example.booktracker.ui.theme.components.SearchTopBar
-import androidx.compose.ui.Modifier
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,11 +38,32 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun BookTrackerApp() {
-    val repository = remember { BookRepository() }
+    //Initialize database and book repository
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val repository = remember {
+        val database = BookDatabase.getDatabase(context)
+        BookRepository(database.bookDao())
+    }
     var showAddScreen by remember { mutableStateOf(false) }
     var selectedBook by remember { mutableStateOf<Book?>(null) }
     var isSearching by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
+
+    // Collect books from flow (this replaces repository.books list)
+    val books by repository.books.collectAsState(initial = emptyList())
+
+    //Filtering the books based on search terms
+    val filteredBooks = remember(books, searchQuery) {
+        if (searchQuery.isEmpty()) {
+            books
+        } else {
+            books.filter { book ->
+                book.title.contains(searchQuery.trim(), ignoreCase = true) ||
+                book.author.contains(searchQuery.trim(), ignoreCase = true) ||
+                book.genre.contains(searchQuery.trim(), ignoreCase = true)
+            }
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -65,7 +90,10 @@ fun BookTrackerApp() {
             showAddScreen -> {
                 AddBookScreen(
                     onSave = { newBook ->
-                        repository.addBook(newBook)
+                        //Wrap call in coroutine
+                        (context as ComponentActivity).lifecycleScope.launch {
+                            repository.addBook(newBook)
+                        }
                         showAddScreen = false
                     },
                     onCancel = { showAddScreen = false }
@@ -76,11 +104,17 @@ fun BookTrackerApp() {
                 BookDetailScreen(
                     book = selectedBook!!,
                     onSave = { updatedBook ->
-                        repository.updateBook(updatedBook)
+                        //Wrap call in coroutine
+                        (context as ComponentActivity).lifecycleScope.launch {
+                            repository.updateBook(updatedBook)
+                        }
                         selectedBook = null
                     },
                     onDelete = { bookId ->
-                        repository.deleteBook(bookId)
+                        //Wrap call in coroutine
+                        (context as ComponentActivity).lifecycleScope.launch {
+                            repository.deleteBook(bookId)
+                        }
                         selectedBook = null
                     },
                     onCancel = { selectedBook = null }
@@ -88,17 +122,6 @@ fun BookTrackerApp() {
             }
 
             else -> {
-                // Filter books based on search query
-                val filteredBooks = if (searchQuery.isEmpty()) {
-                    repository.books
-                } else {
-                    repository.books.filter { book ->
-                        book.title.contains(searchQuery.trim(), ignoreCase = true) ||
-                        book.author.contains(searchQuery.trim(), ignoreCase = true) ||
-                        book.genre.contains(searchQuery.trim(), ignoreCase = true)
-                    }
-                }
-
                 BookListScreen(
                     bookList = filteredBooks,
                     modifier = Modifier.padding(innerPadding),
