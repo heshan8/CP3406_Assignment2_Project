@@ -11,14 +11,18 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 import com.example.booktracker.data.Book
 import com.example.booktracker.data.BookRepository
+import com.example.booktracker.data.BookDatabase
 import com.example.booktracker.ui.theme.BookTrackerTheme
 import com.example.booktracker.ui.theme.screens.AddBookScreen
 import com.example.booktracker.ui.theme.screens.BookDetailScreen
 import com.example.booktracker.ui.theme.components.BookListScreen
 import com.example.booktracker.ui.theme.components.SearchTopBar
-import androidx.compose.ui.Modifier
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
