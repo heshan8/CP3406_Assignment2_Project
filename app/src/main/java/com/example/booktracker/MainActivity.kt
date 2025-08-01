@@ -39,12 +39,12 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun BookTrackerApp() {
-    //Dark mode state
-    var isDarkMode by remember { mutableStateOf(false) }
-    val systemDarkMode = isSystemInDarkTheme()
+    //Dark mode state gets saved after restating the app
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val themePrefs = remember { ThemePreferences(context) }
 
-    LaunchedEffect(Unit) {
-        isDarkMode = systemDarkMode
+    var isDarkMode by remember {
+        mutableStateOf(themePrefs.isDarkMode())
     }
     //Wrap inside dark theme
     BookTrackerTheme(darkTheme = isDarkMode) {
