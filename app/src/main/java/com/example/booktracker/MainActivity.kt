@@ -58,8 +58,8 @@ fun BookTrackerApp() {
             books
         } else {
             books.filter { book ->
-                book.title.contains(searchQuery.trim(), ignoreCase = true)
-                book.author.contains(searchQuery.trim(), ignoreCase = true)
+                book.title.contains(searchQuery.trim(), ignoreCase = true) ||
+                book.author.contains(searchQuery.trim(), ignoreCase = true) ||
                 book.genre.contains(searchQuery.trim(), ignoreCase = true)
             }
         }
