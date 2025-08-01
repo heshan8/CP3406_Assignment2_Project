@@ -49,6 +49,9 @@ fun BookTrackerApp() {
     var isSearching by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
 
+    // Collect books from flow (this replaces repository.books list)
+    val books by repository.books.collectAsState(initial = emptyList())
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
