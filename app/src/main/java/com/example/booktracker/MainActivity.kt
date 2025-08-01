@@ -88,7 +88,10 @@ fun BookTrackerApp() {
                             if (!isSearching) searchQuery = ""
                         },
                         isDarkMode = isDarkMode,
-                        onDarkModeToggle = { isDarkMode = !isDarkMode }
+                        onDarkModeToggle = {
+                            isDarkMode = !isDarkMode
+                            themePrefs.setDarkMode(isDarkMode)
+                        }
                     )
                 }
             },
