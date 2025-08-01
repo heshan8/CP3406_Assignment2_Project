@@ -45,102 +45,105 @@ fun BookTrackerApp() {
     LaunchedEffect(Unit) {
         isDarkMode = systemDarkMode
     }
-    //Initialize database and book repository
-    val context = androidx.compose.ui.platform.LocalContext.current
-    val repository = remember {
-        val database = BookDatabase.getDatabase(context)
-        BookRepository(database.bookDao())
-    }
-    var showAddScreen by remember { mutableStateOf(false) }
-    var selectedBook by remember { mutableStateOf<Book?>(null) }
-    var isSearching by remember { mutableStateOf(false) }
-    var searchQuery by remember { mutableStateOf("") }
-    var isDarkMode by remember { mutableStateOf(false) }
-    val systemDarkMode = isSystemInDarkTheme()
-    LaunchedEffect(Unit) {
-        isDarkMode = systemDarkMode
-    }
+    //Wrap inside dark theme
+    BookTrackerTheme(darkTheme = isDarkMode) {
+        //Initialize database and book repository
+        val context = androidx.compose.ui.platform.LocalContext.current
+        val repository = remember {
+            val database = BookDatabase.getDatabase(context)
+            BookRepository(database.bookDao())
+        }
+        var showAddScreen by remember { mutableStateOf(false) }
+        var selectedBook by remember { mutableStateOf<Book?>(null) }
+        var isSearching by remember { mutableStateOf(false) }
+        var searchQuery by remember { mutableStateOf("") }
+        var isDarkMode by remember { mutableStateOf(false) }
+        val systemDarkMode = isSystemInDarkTheme()
+        LaunchedEffect(Unit) {
+            isDarkMode = systemDarkMode
+        }
 
-    // Collect books from flow (this replaces repository.books list)
-    val books by repository.books.collectAsState(initial = emptyList())
+        // Collect books from flow (this replaces repository.books list)
+        val books by repository.books.collectAsState(initial = emptyList())
 
-    //Filtering the books based on search terms
-    val filteredBooks = remember(books, searchQuery) {
-        if (searchQuery.isEmpty()) {
-            books
-        } else {
-            books.filter { book ->
-                book.title.contains(searchQuery.trim(), ignoreCase = true) ||
-                book.author.contains(searchQuery.trim(), ignoreCase = true) ||
-                book.genre.contains(searchQuery.trim(), ignoreCase = true)
+        //Filtering the books based on search terms
+        val filteredBooks = remember(books, searchQuery) {
+            if (searchQuery.isEmpty()) {
+                books
+            } else {
+                books.filter { book ->
+                    book.title.contains(searchQuery.trim(), ignoreCase = true) ||
+                            book.author.contains(searchQuery.trim(), ignoreCase = true) ||
+                            book.genre.contains(searchQuery.trim(), ignoreCase = true)
+                }
             }
         }
-    }
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            if (!showAddScreen && selectedBook == null) {
-                SearchTopBar(
-                    isSearching = isSearching,
-                    searchQuery = searchQuery,
-                    onSearchQueryChange = { searchQuery = it },
-                    onSearchToggle = {
-                        isSearching = !isSearching
-                        if (!isSearching) searchQuery = ""
-                    },
-                    isDarkMode = isDarkMode,
-                    onDarkModeToggle = { isDarkMode = !isDarkMode }
-                )
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            topBar = {
+                if (!showAddScreen && selectedBook == null) {
+                    SearchTopBar(
+                        isSearching = isSearching,
+                        searchQuery = searchQuery,
+                        onSearchQueryChange = { searchQuery = it },
+                        onSearchToggle = {
+                            isSearching = !isSearching
+                            if (!isSearching) searchQuery = ""
+                        },
+                        isDarkMode = isDarkMode,
+                        onDarkModeToggle = { isDarkMode = !isDarkMode }
+                    )
+                }
+            },
+            floatingActionButton = {
+                FloatingActionButton(onClick = { showAddScreen = true }) {
+                    Icon(Icons.Default.Add, contentDescription = "Add Book")
+                }
             }
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = { showAddScreen = true }) {
-                Icon(Icons.Default.Add, contentDescription = "Add Book")
-            }
-        }
-    ) { innerPadding ->
-        when {
-            showAddScreen -> {
-                AddBookScreen(
-                    onSave = { newBook ->
-                        //Wrap call in coroutine
-                        (context as ComponentActivity).lifecycleScope.launch {
-                            repository.addBook(newBook)
-                        }
-                        showAddScreen = false
-                    },
-                    onCancel = { showAddScreen = false }
-                )
-            }
+        ) { innerPadding ->
+            when {
+                showAddScreen -> {
+                    AddBookScreen(
+                        onSave = { newBook ->
+                            //Wrap call in coroutine
+                            (context as ComponentActivity).lifecycleScope.launch {
+                                repository.addBook(newBook)
+                            }
+                            showAddScreen = false
+                        },
+                        onCancel = { showAddScreen = false }
+                    )
+                }
 
-            selectedBook != null -> {
-                BookDetailScreen(
-                    book = selectedBook!!,
-                    onSave = { updatedBook ->
-                        //Wrap call in coroutine
-                        (context as ComponentActivity).lifecycleScope.launch {
-                            repository.updateBook(updatedBook)
-                        }
-                        selectedBook = null
-                    },
-                    onDelete = { bookId ->
-                        //Wrap call in coroutine
-                        (context as ComponentActivity).lifecycleScope.launch {
-                            repository.deleteBook(bookId)
-                        }
-                        selectedBook = null
-                    },
-                    onCancel = { selectedBook = null }
-                )
-            }
+                selectedBook != null -> {
+                    BookDetailScreen(
+                        book = selectedBook!!,
+                        onSave = { updatedBook ->
+                            //Wrap call in coroutine
+                            (context as ComponentActivity).lifecycleScope.launch {
+                                repository.updateBook(updatedBook)
+                            }
+                            selectedBook = null
+                        },
+                        onDelete = { bookId ->
+                            //Wrap call in coroutine
+                            (context as ComponentActivity).lifecycleScope.launch {
+                                repository.deleteBook(bookId)
+                            }
+                            selectedBook = null
+                        },
+                        onCancel = { selectedBook = null }
+                    )
+                }
 
-            else -> {
-                BookListScreen(
-                    bookList = filteredBooks,
-                    modifier = Modifier.padding(innerPadding),
-                    onBookClick = { selectedBook = it }
-                )
+                else -> {
+                    BookListScreen(
+                        bookList = filteredBooks,
+                        modifier = Modifier.padding(innerPadding),
+                        onBookClick = { selectedBook = it }
+                    )
+                }
             }
         }
     }
