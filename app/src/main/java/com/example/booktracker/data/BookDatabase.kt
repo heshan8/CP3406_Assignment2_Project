@@ -6,3 +6,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import android.content.Context
 
+@TypeConverters(Converters::class)
+abstract class BookDatabase : RoomDatabase() {
+    abstract fun bookDao(): BookDao
+}
