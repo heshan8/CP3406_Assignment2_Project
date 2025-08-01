@@ -30,12 +30,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            BookTrackerTheme(darkTheme = isDarkMode) {
-                BookTrackerApp()
-            }
+            BookTrackerApp()
         }
     }
 }
+
 
 @Composable
 fun BookTrackerApp() {
