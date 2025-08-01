@@ -1,6 +1,5 @@
 package com.example.booktracker.data
 
-import android.adservices.adid.AdId
 import kotlinx.coroutines.flow.Flow
 
 class BookRepository(private val bookDao: BookDao) {
