@@ -39,6 +39,14 @@ fun SearchTopBar(
             }
         },
         actions = {
+            IconButton(onClick = onDarkModeToggle) {
+                Icon(
+                    imageVector = if (isDarkMode) Icons.Default.LightMode else Icons.Default.DarkMode,
+                    contentDescription = if (isDarkMode) "Switch to light theme" else "Switch to dark theme"
+                )
+            }
+
+
             IconButton(onClick = onSearchToggle) {
                 Icon(
                     imageVector = if (isSearching) Icons.Default.Close else Icons.Default.Search,
