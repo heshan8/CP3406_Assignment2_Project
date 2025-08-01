@@ -38,6 +38,13 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun BookTrackerApp() {
+    //Dark mode state
+    var isDarkMode by remember { mutableStateOf(false) }
+    val systemDarkMode = isSystemInDarkTheme()
+
+    LaunchedEffect(Unit) {
+        isDarkMode = systemDarkMode
+    }
     //Initialize database and book repository
     val context = androidx.compose.ui.platform.LocalContext.current
     val repository = remember {
