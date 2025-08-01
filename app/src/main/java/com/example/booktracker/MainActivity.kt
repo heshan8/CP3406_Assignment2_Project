@@ -49,7 +49,6 @@ fun BookTrackerApp() {
     //Wrap inside dark theme
     BookTrackerTheme(darkTheme = isDarkMode) {
         //Initialize database and book repository
-        val context = androidx.compose.ui.platform.LocalContext.current
         val repository = remember {
             val database = BookDatabase.getDatabase(context)
             BookRepository(database.bookDao())
