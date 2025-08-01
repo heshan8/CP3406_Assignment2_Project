@@ -57,12 +57,7 @@ fun BookTrackerApp() {
         var selectedBook by remember { mutableStateOf<Book?>(null) }
         var isSearching by remember { mutableStateOf(false) }
         var searchQuery by remember { mutableStateOf("") }
-        var isDarkMode by remember { mutableStateOf(false) }
-        val systemDarkMode = isSystemInDarkTheme()
-        LaunchedEffect(Unit) {
-            isDarkMode = systemDarkMode
-        }
-
+       
         // Collect books from flow (this replaces repository.books list)
         val books by repository.books.collectAsState(initial = emptyList())
 
