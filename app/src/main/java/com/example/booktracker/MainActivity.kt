@@ -1,6 +1,7 @@
 package com.example.booktracker
 
 import android.os.Bundle
+import androidx.core.view.WindowCompat
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -12,7 +13,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import com.example.booktracker.data.Book
@@ -46,6 +46,15 @@ fun BookTrackerApp() {
     var isDarkMode by remember {
         mutableStateOf(themePrefs.isDarkMode())
     }
+
+    // Update status bar appearance when theme changes
+    LaunchedEffect(isDarkMode) {
+        val activity = context as ComponentActivity
+        WindowCompat.getInsetsController(activity.window, activity.window.decorView).apply {
+            isAppearanceLightStatusBars = !isDarkMode
+        }
+    }
+
     //Wrap inside dark theme
     BookTrackerTheme(darkTheme = isDarkMode) {
         //Initialize database and book repository
