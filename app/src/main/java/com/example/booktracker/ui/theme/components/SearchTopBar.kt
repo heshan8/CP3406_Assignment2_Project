@@ -16,7 +16,9 @@ fun SearchTopBar(
     isSearching: Boolean,
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
-    onSearchToggle: () -> Unit
+    onSearchToggle: () -> Unit,
+    isDarkMode: Boolean,
+    onDarkModeToggle: () -> Unit
 ) {
     TopAppBar(
         title = {
