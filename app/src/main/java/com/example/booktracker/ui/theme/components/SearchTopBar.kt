@@ -49,11 +49,13 @@ fun SearchTopBar(
             }
 
 
-            IconButton(onClick = onSearchToggle) {
-                Icon(
-                    imageVector = if (isSearching) Icons.Default.Close else Icons.Default.Search,
-                    contentDescription = if (isSearching) "Close search" else "Search books"
-                )
+            if (currentDestination == BookTrackerDestination.MY_LIBRARY) {
+                IconButton(onClick = onSearchToggle) {
+                    Icon(
+                        imageVector = if (isSearching) Icons.Default.Close else Icons.Default.Search,
+                        contentDescription = if (isSearching) "Close search" else "Search books"
+                    )
+                }
             }
         }
     )
