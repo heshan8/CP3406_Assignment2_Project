@@ -133,17 +133,19 @@ fun BookTrackerApp(onBooksLoaded: () -> Unit = {}) {
                 }
             },
             bottomBar = {
-                NavigationBar {
-                    BookTrackerDestination.entries.forEach { destination ->
-                        NavigationBarItem(
-                            selected = currentDestination ==destination,
-                            onClick = {
-                                currentDestination = destination
-                                navController.navigate(destination.route)
-                            },
-                            icon = { Text(if (destination == BookTrackerDestination.MY_LIBRARY) "📚" else "🔍") },
-                            label = { Text(destination.title) }
-                        )
+                if (!showAddScreen && selectedBook == null) {
+                    NavigationBar {
+                        BookTrackerDestination.entries.forEach { destination ->
+                            NavigationBarItem(
+                                selected = currentDestination == destination,
+                                onClick = {
+                                    currentDestination = destination
+                                    navController.navigate(destination.route)
+                                },
+                                icon = { Text(if (destination == BookTrackerDestination.MY_LIBRARY) "📚" else "🔍") },
+                                label = { Text(destination.title) }
+                            )
+                        }
                     }
                 }
             }
