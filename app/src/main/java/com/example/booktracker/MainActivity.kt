@@ -129,7 +129,23 @@ fun BookTrackerApp(onBooksLoaded: () -> Unit = {}) {
                 FloatingActionButton(onClick = { showAddScreen = true }) {
                     Icon(Icons.Default.Add, contentDescription = "Add Book")
                 }
+            },
+            bottomBar = {
+                NavigationBar {
+                    BookTrackerDestination.entries.forEach { destination ->
+                        NavigationBarItem(
+                            selected = currentDestination ==destination,
+                            onClick = {
+                                currentDestination = destination
+                                navController.navigate(destination.route)
+                            },
+                            icon = { Text(if (destination == BookTrackerDestination.MY_LIBRARY) "📚" else "🔍") },
+                            label = { Text(destination.title) }
+                        )
+                    }
+                }
             }
+
         ) { innerPadding ->
             when {
                 showAddScreen -> {
