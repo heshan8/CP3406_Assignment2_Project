@@ -82,7 +82,7 @@ fun BookTrackerApp(onBooksLoaded: () -> Unit = {}) {
 
         // Signal when books are loaded (even if empty list)
         LaunchedEffect(Unit) {
-            kotlinx.coroutines.delay(500) // Minimum 0.5 seconds to show splash
+            kotlinx.coroutines.delay(1000) // Minimum 0.5 seconds to show splash
             onBooksLoaded()
         }
 
