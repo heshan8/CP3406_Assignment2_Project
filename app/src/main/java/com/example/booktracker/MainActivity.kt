@@ -33,11 +33,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         //This will keep splash screen until books are loaded
-        val keepSplashScreen = true
-        splashScreen.setKeepOnScreenCondition { keepSplashScreen }
+        var isReady = false
+        splashScreen.setKeepOnScreenCondition { !isReady }
 
         enableEdgeToEdge()
         setContent {
+            // Set isReady to true after a 1.5 second delay to show splash screen
+            LaunchedEffect(Unit) {
+                kotlinx.coroutines.delay(1500)
+                isReady = true
+            }
             BookTrackerApp()
         }
     }
