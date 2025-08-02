@@ -123,7 +123,8 @@ fun BookTrackerApp(onBooksLoaded: () -> Unit = {}) {
                         onDarkModeToggle = {
                             isDarkMode = !isDarkMode
                             themePrefs.setDarkMode(isDarkMode)
-                        }
+                        },
+                        currentDestination = currentDestination
                     )
                 }
             },
