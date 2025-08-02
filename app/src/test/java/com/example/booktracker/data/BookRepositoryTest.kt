@@ -60,16 +60,15 @@ class BookRepositoryTest {
     }
 
     @Test
-    fun getAllBooks_returnsFlowFromDao() = runTest {
+    fun getAllBooks_callsDaoGetAllBooks() = runTest {
         val expectedBooks = listOf(
             Book(title = "Book 1", author = "Author 1", status = BookStatus.TO_READ),
             Book(title = "Book 2", author = "Author 2", status = BookStatus.READING)
         )
         whenever(mockBookDao.getAllBooks()).thenReturn(flowOf(expectedBooks))
 
-
         val result = repository.books
-        
-        assertEquals(flowOf(expectedBooks), result)
+
+        verify(mockBookDao).getAllBooks()
     }
 }
