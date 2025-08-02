@@ -80,6 +80,8 @@ fun BookTrackerApp(onBooksLoaded: () -> Unit = {}) {
         var selectedBook by remember { mutableStateOf<Book?>(null) }
         var isSearching by remember { mutableStateOf(false) }
         var searchQuery by remember { mutableStateOf("") }
+        val navController = rememberNavController()
+        var currentDestination by remember { mutableStateOf(BookTrackerDestination.MY_LIBRARY) }
 
         // Collect books from flow (this replaces repository.books list)
         val books by repository.books.collectAsState(initial = emptyList())
