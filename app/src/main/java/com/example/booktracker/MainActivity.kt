@@ -128,10 +128,14 @@ fun BookTrackerApp(onBooksLoaded: () -> Unit = {}) {
                 }
             },
             floatingActionButton = {
-                FloatingActionButton(onClick = { showAddScreen = true }) {
-                    Icon(Icons.Default.Add, contentDescription = "Add Book")
+                //Shows add book button only in main book list screen
+                if (!showAddScreen && selectedBook == null && currentDestination == BookTrackerDestination.MY_LIBRARY) {
+                    FloatingActionButton(onClick = { showAddScreen = true }) {
+                        Icon(Icons.Default.Add, contentDescription = "Add Book")
+                    }
                 }
             },
+
             bottomBar = {
                 // if line hides to bottom bar based on add book and book detail screen activity
                 if (!showAddScreen && selectedBook == null) {
