@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.example.booktracker.BookTrackerDestination
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -18,7 +19,8 @@ fun SearchTopBar(
     onSearchQueryChange: (String) -> Unit,
     onSearchToggle: () -> Unit,
     isDarkMode: Boolean,
-    onDarkModeToggle: () -> Unit
+    onDarkModeToggle: () -> Unit,
+    currentDestination: BookTrackerDestination
 ) {
     TopAppBar(
         title = {
@@ -35,7 +37,7 @@ fun SearchTopBar(
                     )
                 )
             } else {
-                Text("My Books")
+                Text(currentDestination.title)
             }
         },
         actions = {
