@@ -32,7 +32,44 @@ class BookRepositoryTest {
         )
 
         repository.addBook(book)
-        
+
         verify(mockBookDao).insertBook(book)
+    }
+
+    @Test
+    fun updateBook_callsDaoUpdateBook() = runTest {
+        val book = Book(
+            id = "test-id",
+            title = "Updated Book",
+            author = "Test Author",
+            status = BookStatus.READING
+        )
+
+        repository.updateBook(book)
+
+        verify(mockBookDao).updateBook(book)
+    }
+
+    @Test
+    fun deleteBook_callsDaoDeleteBookById() = runTest {
+        val bookId = "test-book-id"
+
+        repository.deleteBook(bookId)
+
+        verify(mockBookDao).deleteBookById(bookId)
+    }
+
+    @Test
+    fun getAllBooks_returnsFlowFromDao() = runTest {
+        val expectedBooks = listOf(
+            Book(title = "Book 1", author = "Author 1", status = BookStatus.TO_READ),
+            Book(title = "Book 2", author = "Author 2", status = BookStatus.READING)
+        )
+        whenever(mockBookDao.getAllBooks()).thenReturn(flowOf(expectedBooks))
+
+
+        val result = repository.books
+        
+        assertEquals(flowOf(expectedBooks), result)
     }
 }
