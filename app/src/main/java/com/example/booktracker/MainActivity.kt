@@ -1,6 +1,7 @@
 package com.example.booktracker
 
 import android.os.Bundle
+import androidx.core.view.WindowCompat
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 import com.example.booktracker.data.Book
 import com.example.booktracker.data.BookRepository
 import com.example.booktracker.data.BookDatabase
+import com.example.booktracker.data.ThemePreferences
 import com.example.booktracker.ui.theme.BookTrackerTheme
 import com.example.booktracker.ui.theme.screens.AddBookScreen
 import com.example.booktracker.ui.theme.screens.BookDetailScreen
@@ -29,104 +31,126 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            BookTrackerTheme {
-                BookTrackerApp()
-            }
+            BookTrackerApp()
         }
     }
 }
 
+
 @Composable
 fun BookTrackerApp() {
-    //Initialize database and book repository
+    //Dark mode state gets saved after restating the app
     val context = androidx.compose.ui.platform.LocalContext.current
-    val repository = remember {
-        val database = BookDatabase.getDatabase(context)
-        BookRepository(database.bookDao())
+    val themePrefs = remember { ThemePreferences(context) }
+
+    var isDarkMode by remember {
+        mutableStateOf(themePrefs.isDarkMode())
     }
-    var showAddScreen by remember { mutableStateOf(false) }
-    var selectedBook by remember { mutableStateOf<Book?>(null) }
-    var isSearching by remember { mutableStateOf(false) }
-    var searchQuery by remember { mutableStateOf("") }
 
-    // Collect books from flow (this replaces repository.books list)
-    val books by repository.books.collectAsState(initial = emptyList())
-
-    //Filtering the books based on search terms
-    val filteredBooks = remember(books, searchQuery) {
-        if (searchQuery.isEmpty()) {
-            books
-        } else {
-            books.filter { book ->
-                book.title.contains(searchQuery.trim(), ignoreCase = true) ||
-                book.author.contains(searchQuery.trim(), ignoreCase = true) ||
-                book.genre.contains(searchQuery.trim(), ignoreCase = true)
-            }
+    // Update status bar appearance when theme changes
+    LaunchedEffect(isDarkMode) {
+        val activity = context as ComponentActivity
+        WindowCompat.getInsetsController(activity.window, activity.window.decorView).apply {
+            isAppearanceLightStatusBars = !isDarkMode
         }
     }
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            if (!showAddScreen && selectedBook == null) {
-                SearchTopBar(
-                    isSearching = isSearching,
-                    searchQuery = searchQuery,
-                    onSearchQueryChange = { searchQuery = it },
-                    onSearchToggle = {
-                        isSearching = !isSearching
-                        if (!isSearching) searchQuery = ""
-                    }
-                )
-            }
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = { showAddScreen = true }) {
-                Icon(Icons.Default.Add, contentDescription = "Add Book")
+    //Wrap inside dark theme
+    BookTrackerTheme(darkTheme = isDarkMode) {
+        //Initialize database and book repository
+        val repository = remember {
+            val database = BookDatabase.getDatabase(context)
+            BookRepository(database.bookDao())
+        }
+        var showAddScreen by remember { mutableStateOf(false) }
+        var selectedBook by remember { mutableStateOf<Book?>(null) }
+        var isSearching by remember { mutableStateOf(false) }
+        var searchQuery by remember { mutableStateOf("") }
+
+        // Collect books from flow (this replaces repository.books list)
+        val books by repository.books.collectAsState(initial = emptyList())
+
+        //Filtering the books based on search terms
+        val filteredBooks = remember(books, searchQuery) {
+            if (searchQuery.isEmpty()) {
+                books
+            } else {
+                books.filter { book ->
+                    book.title.contains(searchQuery.trim(), ignoreCase = true) ||
+                            book.author.contains(searchQuery.trim(), ignoreCase = true) ||
+                            book.genre.contains(searchQuery.trim(), ignoreCase = true)
+                }
             }
         }
-    ) { innerPadding ->
-        when {
-            showAddScreen -> {
-                AddBookScreen(
-                    onSave = { newBook ->
-                        //Wrap call in coroutine
-                        (context as ComponentActivity).lifecycleScope.launch {
-                            repository.addBook(newBook)
-                        }
-                        showAddScreen = false
-                    },
-                    onCancel = { showAddScreen = false }
-                )
-            }
 
-            selectedBook != null -> {
-                BookDetailScreen(
-                    book = selectedBook!!,
-                    onSave = { updatedBook ->
-                        //Wrap call in coroutine
-                        (context as ComponentActivity).lifecycleScope.launch {
-                            repository.updateBook(updatedBook)
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            topBar = {
+                if (!showAddScreen && selectedBook == null) {
+                    SearchTopBar(
+                        isSearching = isSearching,
+                        searchQuery = searchQuery,
+                        onSearchQueryChange = { searchQuery = it },
+                        onSearchToggle = {
+                            isSearching = !isSearching
+                            if (!isSearching) searchQuery = ""
+                        },
+                        isDarkMode = isDarkMode,
+                        onDarkModeToggle = {
+                            isDarkMode = !isDarkMode
+                            themePrefs.setDarkMode(isDarkMode)
                         }
-                        selectedBook = null
-                    },
-                    onDelete = { bookId ->
-                        //Wrap call in coroutine
-                        (context as ComponentActivity).lifecycleScope.launch {
-                            repository.deleteBook(bookId)
-                        }
-                        selectedBook = null
-                    },
-                    onCancel = { selectedBook = null }
-                )
+                    )
+                }
+            },
+            floatingActionButton = {
+                FloatingActionButton(onClick = { showAddScreen = true }) {
+                    Icon(Icons.Default.Add, contentDescription = "Add Book")
+                }
             }
+        ) { innerPadding ->
+            when {
+                showAddScreen -> {
+                    AddBookScreen(
+                        onSave = { newBook ->
+                            //Wrap call in coroutine
+                            (context as ComponentActivity).lifecycleScope.launch {
+                                repository.addBook(newBook)
+                            }
+                            showAddScreen = false
+                        },
+                        onCancel = { showAddScreen = false }
+                    )
+                }
 
-            else -> {
-                BookListScreen(
-                    bookList = filteredBooks,
-                    modifier = Modifier.padding(innerPadding),
-                    onBookClick = { selectedBook = it }
-                )
+                selectedBook != null -> {
+                    BookDetailScreen(
+                        book = selectedBook!!,
+                        onSave = { updatedBook ->
+                            //Wrap call in coroutine
+                            (context as ComponentActivity).lifecycleScope.launch {
+                                repository.updateBook(updatedBook)
+                            }
+                            selectedBook = null
+                        },
+                        onDelete = { bookId ->
+                            //Wrap call in coroutine
+                            (context as ComponentActivity).lifecycleScope.launch {
+                                repository.deleteBook(bookId)
+                            }
+                            selectedBook = null
+                        },
+                        onCancel = { selectedBook = null }
+                    )
+                }
+
+                else -> {
+                    BookListScreen(
+                        bookList = filteredBooks,
+                        modifier = Modifier.padding(innerPadding),
+                        onBookClick = { selectedBook = it }
+                    )
+                }
             }
         }
     }
