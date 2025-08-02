@@ -29,8 +29,13 @@ import com.example.booktracker.ui.theme.components.SearchTopBar
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
+
+        //This will keep splash screen until books are loaded
+        val keepSplashScreen = true
+        splashScreen.setKeepOnScreenCondition { keepSplashScreen }
+
         enableEdgeToEdge()
         setContent {
             BookTrackerApp()
