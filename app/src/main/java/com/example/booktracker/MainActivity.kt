@@ -23,8 +23,14 @@ import com.example.booktracker.data.ThemePreferences
 import com.example.booktracker.ui.theme.BookTrackerTheme
 import com.example.booktracker.ui.theme.screens.AddBookScreen
 import com.example.booktracker.ui.theme.screens.BookDetailScreen
+import com.example.booktracker.ui.theme.screens.DiscoverScreen
 import com.example.booktracker.ui.theme.components.BookListScreen
 import com.example.booktracker.ui.theme.components.SearchTopBar
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 
 
 class MainActivity : ComponentActivity() {
@@ -76,6 +82,8 @@ fun BookTrackerApp(onBooksLoaded: () -> Unit = {}) {
         var selectedBook by remember { mutableStateOf<Book?>(null) }
         var isSearching by remember { mutableStateOf(false) }
         var searchQuery by remember { mutableStateOf("") }
+        val navController = rememberNavController()
+        var currentDestination by remember { mutableStateOf(BookTrackerDestination.MY_LIBRARY) }
 
         // Collect books from flow (this replaces repository.books list)
         val books by repository.books.collectAsState(initial = emptyList())
@@ -115,15 +123,44 @@ fun BookTrackerApp(onBooksLoaded: () -> Unit = {}) {
                         onDarkModeToggle = {
                             isDarkMode = !isDarkMode
                             themePrefs.setDarkMode(isDarkMode)
-                        }
+                        },
+                        currentDestination = currentDestination
                     )
                 }
             },
             floatingActionButton = {
-                FloatingActionButton(onClick = { showAddScreen = true }) {
-                    Icon(Icons.Default.Add, contentDescription = "Add Book")
+                //Shows add book button only in main book list screen
+                if (!showAddScreen && selectedBook == null && currentDestination == BookTrackerDestination.MY_LIBRARY) {
+                    FloatingActionButton(onClick = { showAddScreen = true }) {
+                        Icon(Icons.Default.Add, contentDescription = "Add Book")
+                    }
+                }
+            },
+
+            bottomBar = {
+                // if line hides to bottom bar based on add book and book detail screen activity
+                if (!showAddScreen && selectedBook == null) {
+                    NavigationBar {
+                        BookTrackerDestination.entries.forEach { destination ->
+                            NavigationBarItem(
+                                selected = currentDestination ==destination,
+                                onClick = {
+                                    currentDestination = destination
+                                    navController.navigate(destination.route)
+                                },
+                                icon = { Text(if (destination == BookTrackerDestination.MY_LIBRARY) "📚" else "🔍") },
+                                label = {
+                                    Text(
+                                        text = destination.title,
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                }
+                            )
+                        }
+                    }
                 }
             }
+
         ) { innerPadding ->
             when {
                 showAddScreen -> {
@@ -161,11 +198,22 @@ fun BookTrackerApp(onBooksLoaded: () -> Unit = {}) {
                 }
 
                 else -> {
-                    BookListScreen(
-                        bookList = filteredBooks,
-                        modifier = Modifier.padding(innerPadding),
-                        onBookClick = { selectedBook = it }
-                    )
+                    NavHost(
+                        navController = navController,
+                        startDestination = BookTrackerDestination.MY_LIBRARY.route,
+                        modifier = Modifier.padding(innerPadding)
+                    ) {
+                        composable(BookTrackerDestination.MY_LIBRARY.route) {
+                            BookListScreen(
+                                bookList = filteredBooks,
+                                onBookClick = { selectedBook = it }
+                            )
+                        }
+
+                        composable(BookTrackerDestination.DISCOVER.route) {
+                            DiscoverScreen()
+                        }
+                    }
                 }
             }
         }
