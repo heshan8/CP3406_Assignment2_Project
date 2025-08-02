@@ -33,24 +33,22 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         //This will keep splash screen until books are loaded
-        var isReady = false
-        splashScreen.setKeepOnScreenCondition { !isReady }
+        var booksLoaded = false
+        splashScreen.setKeepOnScreenCondition { !booksLoaded }
 
         enableEdgeToEdge()
         setContent {
-            // Set isReady to true after a 1.5 second delay to show splash screen
-            LaunchedEffect(Unit) {
-                kotlinx.coroutines.delay(1500)
-                isReady = true
-            }
-            BookTrackerApp()
+            BookTrackerApp(onBooksLoaded = {
+                booksLoaded = true
+            })
+        }
         }
     }
-}
+
 
 
 @Composable
-fun BookTrackerApp() {
+fun BookTrackerApp(onBooksLoaded: () -> Unit = {}) {
     //Dark mode state gets saved after restating the app
     val context = androidx.compose.ui.platform.LocalContext.current
     val themePrefs = remember { ThemePreferences(context) }
@@ -81,6 +79,12 @@ fun BookTrackerApp() {
 
         // Collect books from flow (this replaces repository.books list)
         val books by repository.books.collectAsState(initial = emptyList())
+
+        // Signal when books are loaded (even if empty list)
+        LaunchedEffect(Unit) {
+            kotlinx.coroutines.delay(500) // Minimum 0.5 seconds to show splash
+            onBooksLoaded()
+        }
 
         //Filtering the books based on search terms
         val filteredBooks = remember(books, searchQuery) {
