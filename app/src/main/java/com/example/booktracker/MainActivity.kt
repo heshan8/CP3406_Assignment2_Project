@@ -133,11 +133,12 @@ fun BookTrackerApp(onBooksLoaded: () -> Unit = {}) {
                 }
             },
             bottomBar = {
+                // if line hides to bottom bar based on add book and book detail screen activity
                 if (!showAddScreen && selectedBook == null) {
                     NavigationBar {
                         BookTrackerDestination.entries.forEach { destination ->
                             NavigationBarItem(
-                                selected = currentDestination == destination,
+                                selected = currentDestination ==destination,
                                 onClick = {
                                     currentDestination = destination
                                     navController.navigate(destination.route)
