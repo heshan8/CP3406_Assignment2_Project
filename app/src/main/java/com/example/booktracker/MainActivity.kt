@@ -149,7 +149,12 @@ fun BookTrackerApp(onBooksLoaded: () -> Unit = {}) {
                                     navController.navigate(destination.route)
                                 },
                                 icon = { Text(if (destination == BookTrackerDestination.MY_LIBRARY) "📚" else "🔍") },
-                                label = { Text(destination.title) }
+                                label = {
+                                    Text(
+                                        text = destination.title,
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                }
                             )
                         }
                     }
