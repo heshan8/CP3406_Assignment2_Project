@@ -60,7 +60,7 @@ fun BookListScreen(
         if (finishedBooks.isNotEmpty()) {
             item {
                 SectionHeader(
-                    title = "Finished",
+                    title = "Finished Reading",
                     count = finishedBooks.size
                 )
             }

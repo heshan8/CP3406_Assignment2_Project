@@ -2,6 +2,7 @@ package com.example.booktracker
 
 import android.os.Bundle
 import androidx.core.view.WindowCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -28,17 +29,26 @@ import com.example.booktracker.ui.theme.components.SearchTopBar
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
+
+        //This will keep splash screen until books are loaded
+        var booksLoaded = false
+        splashScreen.setKeepOnScreenCondition { !booksLoaded }
+
         enableEdgeToEdge()
         setContent {
-            BookTrackerApp()
+            BookTrackerApp(onBooksLoaded = {
+                booksLoaded = true
+            })
+        }
         }
     }
-}
+
 
 
 @Composable
-fun BookTrackerApp() {
+fun BookTrackerApp(onBooksLoaded: () -> Unit = {}) {
     //Dark mode state gets saved after restating the app
     val context = androidx.compose.ui.platform.LocalContext.current
     val themePrefs = remember { ThemePreferences(context) }
@@ -69,6 +79,12 @@ fun BookTrackerApp() {
 
         // Collect books from flow (this replaces repository.books list)
         val books by repository.books.collectAsState(initial = emptyList())
+
+        // Signal when books are loaded (even if empty list)
+        LaunchedEffect(Unit) {
+            kotlinx.coroutines.delay(1000) // Minimum 0.5 seconds to show splash
+            onBooksLoaded()
+        }
 
         //Filtering the books based on search terms
         val filteredBooks = remember(books, searchQuery) {
