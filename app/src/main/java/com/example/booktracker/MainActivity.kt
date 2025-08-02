@@ -31,6 +31,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
@@ -183,11 +184,22 @@ fun BookTrackerApp(onBooksLoaded: () -> Unit = {}) {
                 }
 
                 else -> {
-                    BookListScreen(
-                        bookList = filteredBooks,
-                        modifier = Modifier.padding(innerPadding),
-                        onBookClick = { selectedBook = it }
-                    )
+                    NavHost(
+                        navController = navController,
+                        startDestination = BookTrackerDestination.MY_LIBRARY.route,
+                        modifier = Modifier.padding(innerPadding)
+                    ) {
+                        composable(BookTrackerDestination.MY_LIBRARY.route) {
+                            BookListScreen(
+                                bookList = filteredBooks,
+                                onBookClick = { selectedBook = it }
+                            )
+                        }
+
+                        composable(BookTrackerDestination.DISCOVER.route) {
+                            DiscoverScreen()
+                        }
+                    }
                 }
             }
         }
