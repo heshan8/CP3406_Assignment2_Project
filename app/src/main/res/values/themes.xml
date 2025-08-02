@@ -4,7 +4,7 @@
     <style name="Theme.BookTracker" parent="android:Theme.Material.Light.NoActionBar" />
     <style name="Theme.BookTracker.SplashScreen" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/forest_green_40</item>
-        <item name="windowSplashScreenAnimatedIcon">@android:drawable/ic_menu_agenda</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_book_icon</item>
         <item name="postSplashScreenTheme">@android:style/Theme.DeviceDefault</item>
     </style>
 </resources>
