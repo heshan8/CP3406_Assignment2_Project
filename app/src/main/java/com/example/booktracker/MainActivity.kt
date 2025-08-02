@@ -23,6 +23,7 @@ import com.example.booktracker.data.ThemePreferences
 import com.example.booktracker.ui.theme.BookTrackerTheme
 import com.example.booktracker.ui.theme.screens.AddBookScreen
 import com.example.booktracker.ui.theme.screens.BookDetailScreen
+import com.example.booktracker.ui.theme.screens.DiscoverScreen
 import com.example.booktracker.ui.theme.components.BookListScreen
 import com.example.booktracker.ui.theme.components.SearchTopBar
 import androidx.navigation.compose.NavHost
