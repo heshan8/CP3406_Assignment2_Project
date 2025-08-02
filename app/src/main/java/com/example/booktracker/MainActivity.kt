@@ -25,7 +25,11 @@ import com.example.booktracker.ui.theme.screens.AddBookScreen
 import com.example.booktracker.ui.theme.screens.BookDetailScreen
 import com.example.booktracker.ui.theme.components.BookListScreen
 import com.example.booktracker.ui.theme.components.SearchTopBar
-
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
