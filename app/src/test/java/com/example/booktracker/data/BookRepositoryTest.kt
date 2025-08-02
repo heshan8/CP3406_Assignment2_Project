@@ -24,7 +24,15 @@ class BookRepositoryTest {
     }
 
     @Test
-    fun testPlaceholder() {
-        assertTrue(true)
+    fun addBook_callsDaoInsertBook() = runTest {
+        val book = Book(
+            title = "Test Book",
+            author = "Test Author",
+            status = BookStatus.TO_READ
+        )
+
+        repository.addBook(book)
+        
+        verify(mockBookDao).insertBook(book)
     }
 }
