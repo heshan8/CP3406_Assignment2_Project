@@ -38,7 +38,7 @@ class RecommendationRepository(
             .mapValues { it.value.size }
             .toList()
             .sortedByDescending { it.second }
-
+        println("DEBUG: Favorite genres found: $genreCounts")
         return genreCounts.map { it.first }
     }
 }

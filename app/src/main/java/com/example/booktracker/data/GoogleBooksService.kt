@@ -7,6 +7,7 @@ class GoogleBooksService {
 
     suspend fun searchBooksByGenre(genre: String): List<BookRecommendation> {
         // Using mock data for now
+        println("DEBUG: Searching for genre: '$genre'")
         delay(1000) // This is to simulate delays from network
 
         return when (genre.lowercase()) {
