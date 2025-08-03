@@ -62,7 +62,7 @@ fun DiscoverScreen(
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
-            recommendations.forEach { recommendations ->
+            recommendations.forEach { recommendation ->
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -70,14 +70,23 @@ fun DiscoverScreen(
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            text = recommendations.title,
+                            text = recommendation.title,
                             style = MaterialTheme.typography.titleMedium
                         )
                         Text(
-                            text = "by ${recommendations.author}",
+                            text = "by ${recommendation.author}",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
+
+                        if (recommendation.genres.isNotEmpty()) {
+                            Text(
+                                text = recommendation.genres.first(),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.padding(top = 4.dp)
+                            )
+                        }
                     }
                 }
             }
