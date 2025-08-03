@@ -1,14 +1,32 @@
 package com.example.booktracker.data
 
-
+import com.example.booktracker.data.api.RetrofitInstance
 import kotlinx.coroutines.delay
 
 class GoogleBooksService {
 
     suspend fun searchBooksByGenre(genre: String): List<BookRecommendation> {
-        // Using mock data for now
-        println("DEBUG: Searching for genre: '$genre'")
-        delay(1000) // This is to simulate delays from network
+        return try {
+            val response = RetrofitInstance.googleBooksApi.searchBooks("subject:$genre")
+
+            response.items?.map { bookItem ->
+                BookRecommendation(
+                    title = bookItem.volumeInfo.title,
+                    author = bookItem.volumeInfo.authors?.firstOrNull() ?: "Unknown Author",
+                    description = bookItem.volumeInfo.description ?: "",
+                    genres = bookItem.volumeInfo.categories ?: emptyList()
+                )
+            } ?: emptyList()
+
+        } catch (e: Exception) {
+            // Fallback to mock data on error
+            searchBooksByGenreMock(genre)
+        }
+    }
+
+    private suspend fun searchBooksByGenreMock(genre: String): List<BookRecommendation> {
+        println("DEBUG: Using mock data for genre: '$genre'")
+        delay(1000)
 
         return when (genre.lowercase()) {
             "fantasy" -> listOf(
