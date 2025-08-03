@@ -31,6 +31,7 @@ class RecommendationRepository(
             book.genre.isNotBlank()
         }
 
+        // Get all the genres and count them
         val genreCounts = favoriteBooks
             .map {it.genre.lowercase().trim()}
             .groupBy { it }
@@ -38,7 +39,6 @@ class RecommendationRepository(
             .toList()
             .sortedByDescending { it.second }
 
-
-        return emptyList()
+        return genreCounts.map { it.first }
     }
 }
