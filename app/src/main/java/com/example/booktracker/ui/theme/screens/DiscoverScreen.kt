@@ -15,7 +15,13 @@ fun DiscoverScreen(
 ) {
     var recommendations by remember { mutableStateOf<List<BookRecommendation>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
-    
+
+    // Load recommendations once the screen is opened
+    LaunchedEffect(Unit) {
+        recommendations = recommendationRepository.getPersonalizedRecommendations()
+        isLoading = false
+    }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
