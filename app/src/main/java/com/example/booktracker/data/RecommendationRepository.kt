@@ -1,5 +1,6 @@
 package com.example.booktracker.data
 
+import kotlinx.coroutines.flow.first
 
 class RecommendationRepository(
     private val googleBooksService: GoogleBooksService,
@@ -20,7 +21,13 @@ class RecommendationRepository(
     }
 
     private suspend fun getFavoriteGenres(): List<String> {
-        // Placeholder
+        // Get all the books from the repository
+        val allBooks = bookRepository.books.first()
+
+        
+
+
+
         return emptyList()
     }
 }
