@@ -106,15 +106,7 @@ fun RecommendationCard(
                 )
             }
 
-            if (recommendation.description.isNotBlank()) {
-                Text(
-                    text = recommendation.description,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(bottom = 12.dp),
-                    maxLines = 3
-                )
-            }
+
 
             Button(
                 onClick = onAddToLibrary,
