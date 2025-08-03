@@ -16,8 +16,16 @@ class RecommendationRepository(
             return emptyList()
         }
 
-        // Get recommendations for the top genre
-        return googleBooksService.searchBooksByGenre(favoriteGenres.first())
+
+        // Get recommendations from all top genres
+        val allRecommendations = mutableListOf<BookRecommendation>()
+
+        favoriteGenres.forEach { genre ->
+            val genreRecommendations = googleBooksService.searchBooksByGenre(genre)
+            allRecommendations.addAll(genreRecommendations)
+        }
+
+        return allRecommendations
     }
 
     private suspend fun getFavoriteGenres(): List<String> {
