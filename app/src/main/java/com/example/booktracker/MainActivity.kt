@@ -20,6 +20,8 @@ import com.example.booktracker.data.Book
 import com.example.booktracker.data.BookRepository
 import com.example.booktracker.data.BookDatabase
 import com.example.booktracker.data.ThemePreferences
+import com.example.booktracker.data.RecommendationRepository
+import com.example.booktracker.data.GoogleBooksService
 import com.example.booktracker.ui.theme.BookTrackerTheme
 import com.example.booktracker.ui.theme.screens.AddBookScreen
 import com.example.booktracker.ui.theme.screens.BookDetailScreen
@@ -31,6 +33,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+
 
 
 class MainActivity : ComponentActivity() {
@@ -78,6 +81,14 @@ fun BookTrackerApp(onBooksLoaded: () -> Unit = {}) {
             val database = BookDatabase.getDatabase(context)
             BookRepository(database.bookDao())
         }
+
+        val recommendationRepository = remember {
+            RecommendationRepository(
+                googleBooksService = GoogleBooksService(),
+                bookRepository = repository
+            )
+        }
+        
         var showAddScreen by remember { mutableStateOf(false) }
         var selectedBook by remember { mutableStateOf<Book?>(null) }
         var isSearching by remember { mutableStateOf(false) }
@@ -211,7 +222,7 @@ fun BookTrackerApp(onBooksLoaded: () -> Unit = {}) {
                         }
 
                         composable(BookTrackerDestination.DISCOVER.route) {
-                            DiscoverScreen()
+                            DiscoverScreen(recommendationRepository)
                         }
                     }
                 }
