@@ -28,6 +28,15 @@ fun DiscoverScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text(text = "Discover Books", style = MaterialTheme.typography.headlineSmall)
+        if (isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } else {
+            Text(text = "Discover Books", style = MaterialTheme.typography.headlineSmall)
+        }
     }
 }
