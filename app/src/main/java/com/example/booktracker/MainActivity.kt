@@ -33,7 +33,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-
+import com.example.booktracker.data.toBook
 
 
 class MainActivity : ComponentActivity() {
@@ -222,7 +222,14 @@ fun BookTrackerApp(onBooksLoaded: () -> Unit = {}) {
                         }
 
                         composable(BookTrackerDestination.DISCOVER.route) {
-                            DiscoverScreen(recommendationRepository)
+                            DiscoverScreen(
+                                recommendationRepository = recommendationRepository,
+                                onAddToLibrary = { recommendation ->
+                                    (context as ComponentActivity).lifecycleScope.launch {
+                                        repository.addBook(recommendation.toBook())
+                                    }
+                                }
+                            )
                         }
                     }
                 }

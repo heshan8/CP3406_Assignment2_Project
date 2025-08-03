@@ -8,13 +8,15 @@ import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.*
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.booktracker.data.RecommendationRepository
 import com.example.booktracker.data.BookRecommendation
 
 @Composable
 fun DiscoverScreen(
-    recommendationRepository: RecommendationRepository
+    recommendationRepository: RecommendationRepository,
+    onAddToLibrary: (BookRecommendation) -> Unit
 ) {
     var recommendations by remember { mutableStateOf<List<BookRecommendation>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
@@ -25,71 +27,95 @@ fun DiscoverScreen(
         isLoading = false
     }
 
-    if (isLoading) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
-        }
-    } else if (recommendations.isEmpty()) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(text = "📖", style = MaterialTheme.typography.displayLarge)
-            Text(
-                text = "No Recommendations Yet",
-                style = MaterialTheme.typography.headlineSmall
-            )
-            Text(
-                text = "Add some books to your library and rate them first to get personalized recommendations!",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-    } else {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-            item {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        if (isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+
+        } else if (recommendations.isEmpty()) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(text = "📖", style = MaterialTheme.typography.displayLarge)
                 Text(
-                    text = "Recommended for You",
+                    text = "No Recommendations yet",
                     style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                Text(
+                    text = "Add some books to your library and rate them first to get personalized recommendations!",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center
+                )
+            }
+        } else {
+            Text(
+                text = "Recommended for You",
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(recommendations) { recommendation ->
+                    RecommendationCard(
+                        recommendation = recommendation,
+                        onAddToLibrary = { onAddToLibrary(recommendation) }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun RecommendationCard(
+    recommendation: BookRecommendation,
+    onAddToLibrary: () -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = recommendation.title,
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = "by ${recommendation.author}",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            if (recommendation.genres.isNotEmpty()) {
+                Text(
+                    text = recommendation.genres.first(),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
             }
 
-            items(recommendations) { recommendation ->
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
-                            text = recommendation.title,
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                        Text(
-                            text = "by ${recommendation.author}",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
 
-                        if (recommendation.genres.isNotEmpty()) {
-                            Text(
-                                text = recommendation.genres.first(),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.padding(top = 4.dp)
-                            )
-                        }
-                    }
-                }
+
+            Button(
+                onClick = onAddToLibrary,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Add to Library")
             }
         }
     }
