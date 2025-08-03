@@ -56,7 +56,31 @@ fun DiscoverScreen(
                 )
             }
         } else {
-            Text(text = "Discover Books", style = MaterialTheme.typography.headlineSmall)
+            Text(
+                text = "Recommended for You",
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+
+            recommendations.forEach { recommendations ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = recommendations.title,
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Text(
+                            text = "by ${recommendation.author}",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            }
         }
     }
 }
