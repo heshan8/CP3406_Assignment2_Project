@@ -7,9 +7,12 @@ class GoogleBooksService {
 
     suspend fun searchBooksByGenre(genre: String): List<BookRecommendation> {
         return try {
+            println("DEBUG: Searching for genre: '$genre'")
             val response = RetrofitInstance.googleBooksApi.searchBooks("subject:$genre")
+            println("DEBUG: API returned ${response.totalItems} total items, ${response.items?.size ?: 0} items in response")
 
-            response.items?.map { bookItem ->
+            val results = response.items?.map { bookItem ->
+                println("DEBUG: Book: '${bookItem.volumeInfo.title}' by ${bookItem.volumeInfo.authors?.firstOrNull() ?: "Unknown"}")
                 BookRecommendation(
                     title = bookItem.volumeInfo.title,
                     author = bookItem.volumeInfo.authors?.firstOrNull() ?: "Unknown Author",
@@ -18,7 +21,11 @@ class GoogleBooksService {
                 )
             } ?: emptyList()
 
+            println("DEBUG: Returning ${results.size} recommendations")
+            results
+
         } catch (e: Exception) {
+            println("DEBUG: API error: ${e.message}")
             // Fallback to mock data on error
             searchBooksByGenreMock(genre)
         }
