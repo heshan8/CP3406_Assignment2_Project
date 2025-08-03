@@ -74,7 +74,7 @@ fun DiscoverScreen(
                             style = MaterialTheme.typography.titleMedium
                         )
                         Text(
-                            text = "by ${recommendation.author}",
+                            text = "by ${recommendations.author}",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
