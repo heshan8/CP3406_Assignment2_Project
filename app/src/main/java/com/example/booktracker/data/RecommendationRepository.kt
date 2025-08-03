@@ -24,7 +24,12 @@ class RecommendationRepository(
         // Get all the books from the repository
         val allBooks = bookRepository.books.first()
 
-        
+        // Find all the finished books with rating 4+ and have genres
+        val favoriteBooks = allBooks.filter { book ->
+            book.status == BookStatus.FINISHED &&
+            book.rating >= 4 &&
+            book.genre.isNotBlank()
+        }
 
 
 
