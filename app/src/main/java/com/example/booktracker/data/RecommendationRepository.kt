@@ -31,6 +31,12 @@ class RecommendationRepository(
             book.genre.isNotBlank()
         }
 
+        val genreCounts = favoriteBooks
+            .map {it.genre.lowercase().trim()}
+            .groupBy { it }
+            .mapValues { it.value.size }
+            .toList()
+            .sortedByDescending { it.second }
 
 
         return emptyList()
