@@ -222,7 +222,7 @@ fun BookTrackerApp(onBooksLoaded: () -> Unit = {}) {
                         }
 
                         composable(BookTrackerDestination.DISCOVER.route) {
-                            DiscoverScreen()
+                            DiscoverScreen(recommendationRepository)
                         }
                     }
                 }
