@@ -1,6 +1,5 @@
 package com.example.booktracker.data.api
 
-
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -20,12 +19,5 @@ data class VolumeInfo(
     val title: String,
     val authors: List<String>? = null,
     val description: String? = null,
-    val categories: List<String>? = null,
-    val imageLinks: ImageLinks? = null
-)
-
-@Serializable
-data class ImageLinks(
-    val thumbnail: String? = null,
-    val smallThumbnail: String? = null
+    val categories: List<String>? = null
 )
