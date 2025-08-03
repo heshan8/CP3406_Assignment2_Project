@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.*
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.booktracker.data.RecommendationRepository
 import com.example.booktracker.data.BookRecommendation
@@ -47,13 +48,15 @@ fun DiscoverScreen(
             ) {
                 Text(text = "📖", style = MaterialTheme.typography.displayLarge)
                 Text(
-                    text = "No Recommendations Yet",
-                    style = MaterialTheme.typography.headlineSmall
+                    text = "No Recommendations yet",
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
                 Text(
                     text = "Add some books to your library and rate them first to get personalized recommendations!",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center
                 )
             }
         } else {
