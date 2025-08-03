@@ -8,11 +8,20 @@ class RecommendationRepository(
 ) {
 
     suspend fun getPersonalizedRecommendations(): List<BookRecommendation> {
-        // Get user's favorite genres from their finished books with high ratings
-        val favoriteGenres = getFavoriteGenres()
+        // Get all books from repository
+        val allBooks = bookRepository.books.first()
+
+        // Find all genres from finished books with 4+ rating
+        val favoriteGenres = allBooks
+            .filter { book ->
+                book.status == BookStatus.FINISHED &&
+                book.rating >= 4 &&
+                book.genre.isNotBlank()
+            }
+            .map { it.genre.lowercase().trim() }
+            .distinct() // This will remove duplicate books
 
         if (favoriteGenres.isEmpty()) {
-            // If no reading history, return popular books
             return emptyList()
         }
 
@@ -26,27 +35,5 @@ class RecommendationRepository(
         }
 
         return allRecommendations
-    }
-
-    private suspend fun getFavoriteGenres(): List<String> {
-        // Get all the books from the repository
-        val allBooks = bookRepository.books.first()
-
-        // Find all the finished books with rating 4+ and have genres
-        val favoriteBooks = allBooks.filter { book ->
-            book.status == BookStatus.FINISHED &&
-            book.rating >= 4 &&
-            book.genre.isNotBlank()
-        }
-
-        // Get all the genres and count them
-        val genreCounts = favoriteBooks
-            .map {it.genre.lowercase().trim()}
-            .groupBy { it }
-            .mapValues { it.value.size }
-            .toList()
-            .sortedByDescending { it.second }
-        println("DEBUG: Favorite genres found: $genreCounts")
-        return genreCounts.map { it.first }
     }
 }
