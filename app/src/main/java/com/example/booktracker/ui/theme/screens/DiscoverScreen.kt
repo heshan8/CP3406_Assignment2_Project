@@ -7,6 +7,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.booktracker.data.RecommendationRepository
 import androidx.compose.runtime.*
+import androidx.compose.ui.unit.dp
 import com.example.booktracker.data.BookRecommendation
 
 @Composable
@@ -23,11 +24,10 @@ fun DiscoverScreen(
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
     ) {
-        Text(text = "🔎", style = MaterialTheme.typography.displayLarge)
         Text(text = "Discover Books", style = MaterialTheme.typography.headlineSmall)
     }
 }
