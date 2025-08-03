@@ -12,7 +12,7 @@ class RecommendationRepository(
 
         if (favoriteGenres.isEmpty()) {
             // If no reading history, return popular books
-            return googleBooksService.searchBooksByGenre("fantasy")
+            return emptyList()
         }
 
         // Get recommendations for the top genre
