@@ -6,11 +6,16 @@ import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.booktracker.data.RecommendationRepository
+import androidx.compose.runtime.*
+import com.example.booktracker.data.BookRecommendation
 
 @Composable
 fun DiscoverScreen(
     recommendationRepository: RecommendationRepository
 ) {
+    var recommendations by remember { mutableStateOf<List<BookRecommendation>>(emptyList()) }
+    var isLoading by remember { mutableStateOf(true) }
+    
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
