@@ -5,9 +5,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.example.booktracker.data.RecommendationRepository
 
 @Composable
-fun DiscoverScreen() {
+fun DiscoverScreen(
+    recommendationRepository: RecommendationRepository
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
